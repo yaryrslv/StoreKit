@@ -44,6 +44,17 @@ namespace StoreKit.Domain.Constants
             public const string Remove = "Permissions.Brands.Remove";
         }
 
+        [DisplayName("News")]
+        [Description("News Permissions")]
+        public static class News
+        {
+            public const string View = "Permissions.News.View";
+            public const string Search = "Permissions.News.Search";
+            public const string Register = "Permissions.News.Register";
+            public const string Update = "Permissions.News.Update";
+            public const string Remove = "Permissions.News.Remove";
+        }
+
         [DisplayName("Role Claims")]
         [Description("Role Claims Permissions")]
         public static class RoleClaims

@@ -9,7 +9,9 @@ namespace StoreKit.Domain.Constants
             PermissionConstants.Products.Search,
             PermissionConstants.Products.View,
             PermissionConstants.Brands.Search,
-            PermissionConstants.Brands.View
+            PermissionConstants.Brands.View,
+            PermissionConstants.News.Search,
+            PermissionConstants.News.View
         };
     }
 }
