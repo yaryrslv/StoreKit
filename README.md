@@ -1,1 +1,2 @@
-dotnet ef migrations add <CommitMessage> --project .././Migrators/Migrators.<Provider>/ --context ApplicationDbContext -o Migrations/Application
+dotnet ef migrations add PostgreSQL --project .././Migrators/Migrators.PostgreSQL/ --context ApplicationDbCon
+text -o Migrations/Application
