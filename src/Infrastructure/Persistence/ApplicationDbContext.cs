@@ -26,7 +26,6 @@ namespace StoreKit.Infrastructure.Persistence
         }
 
         public DbSet<Product> Products { get; set; }
-        public DbSet<Brand> Brands { get; set; }
         public DbSet<News> News { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

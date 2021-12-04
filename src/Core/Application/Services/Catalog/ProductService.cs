@@ -31,10 +31,8 @@ namespace StoreKit.Application.Services.Catalog
         {
             var productExists = await _repository.ExistsAsync<Product>(a => a.Name == request.Name);
             if (productExists) throw new EntityAlreadyExistsException(string.Format(_localizer["product.alreadyexists"], request.Name));
-            var brandExists = await _repository.ExistsAsync<Brand>(a => a.Id == request.BrandId);
-            if (!brandExists) throw new EntityNotFoundException(string.Format(_localizer["brand.notfound"], request.BrandId));
             string productImagePath = await _file.UploadAsync<Product>(request.Image, FileType.Image);
-            var product = new Product(request.Name, request.Description, request.Rate, request.BrandId, productImagePath);
+            var product = new Product(request.Name, request.Description, request.Rate, request.Tags, productImagePath);
             var productId = await _repository.CreateAsync<Product>(product);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(productId);
@@ -46,7 +44,7 @@ namespace StoreKit.Application.Services.Catalog
             if (product == null) throw new EntityNotFoundException(string.Format(_localizer["product.notfound"], id));
             string productImagePath = string.Empty;
             if (request.Image != null) productImagePath = await _file.UploadAsync<Product>(request.Image, FileType.Image);
-            var updatedProduct = product.Update(request.Name, request.Description, request.Rate, request.BrandId, productImagePath);
+            var updatedProduct = product.Update(request.Name, request.Description, request.Rate, request.Tags, productImagePath);
             await _repository.UpdateAsync<Product>(updatedProduct);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(id);
@@ -62,7 +60,7 @@ namespace StoreKit.Application.Services.Catalog
         public async Task<Result<ProductDetailsDto>> GetProductDetailsAsync(Guid id)
         {
             var spec = new BaseSpecification<Product>();
-            spec.Includes.Add(a => a.Brand);
+            spec.Includes.Add(a => a.TagType);
             var product = await _repository.GetByIdAsync<Product, ProductDetailsDto>(id, spec);
             return await Result<ProductDetailsDto>.SuccessAsync(product);
         }
