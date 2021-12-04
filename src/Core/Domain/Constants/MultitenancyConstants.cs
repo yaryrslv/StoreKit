@@ -1,6 +1,6 @@
 namespace StoreKit.Domain.Constants
 {
-    public class MultitenancyConstants
+    public static class MultitenancyConstants
     {
         public static class Root
         {

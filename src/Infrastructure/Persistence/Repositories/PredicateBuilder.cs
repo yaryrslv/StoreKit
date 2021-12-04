@@ -20,7 +20,7 @@ namespace StoreKit.Infrastructure.Persistence.Repositories
         public static IQueryable<T> AdvancedSearch<T>(this IQueryable<T> query, Search search)
         {
             var predicate = False<T>();
-            var properties = typeof(T).GetProperties().Where(p => search.Fields.Any(field => p.Name.ToLower() == field.ToLower()));
+            var properties = typeof(T).GetProperties().Where(p => search.Fields.Any(field => string.Equals( p.Name, field, StringComparison.OrdinalIgnoreCase)));
             foreach (var propertyInfo in properties)
             {
                 if (propertyInfo.GetGetMethod().IsVirtual)
