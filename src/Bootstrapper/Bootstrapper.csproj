@@ -3,6 +3,10 @@
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>StoreKit.Bootstrapper</RootNamespace>
     <AssemblyName>StoreKit.Bootstrapper</AssemblyName>
+    <UserSecretsId>eaa10415-03a0-44a0-8276-548103141aca</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>Bootstrapper.xml</DocumentationFile>
@@ -12,6 +16,7 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.4" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.3" />
 
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-rc.2.*">
@@ -25,6 +30,7 @@
     <PackageReference Include="serilog.Enrichers.Thread" Version="3.1.0" />
     <PackageReference Include="serilog.settings.Configuration" Version="3.3.0" />
     <PackageReference Include="serilog.Sinks.MSSqlServer" Version="5.6.1" />
+    <PackageReference Remove="StyleCop.Analyzers" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Application\Application.csproj" />
@@ -35,10 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Roslynator.Analyzers" Version="3.2.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

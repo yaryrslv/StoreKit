@@ -4,7 +4,7 @@ using Mapster;
 
 namespace StoreKit.Infrastructure.Mappings
 {
-    public class MapsterSettings
+    public static class MapsterSettings
     {
         public static void Configure()
         {

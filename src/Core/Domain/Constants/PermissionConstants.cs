@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 namespace StoreKit.Domain.Constants
 {
-    public class PermissionConstants
+    public static class PermissionConstants
     {
         [DisplayName("Identity")]
         [Description("Identity Permissions")]

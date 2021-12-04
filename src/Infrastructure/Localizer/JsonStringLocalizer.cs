@@ -1,6 +1,5 @@
 ﻿using StoreKit.Application.Abstractions.Services.General;
 using StoreKit.Infrastructure.Extensions;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -8,6 +7,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Threading;
+using Formatting = Newtonsoft.Json.Formatting;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace StoreKit.Infrastructure.Localizer
 {
