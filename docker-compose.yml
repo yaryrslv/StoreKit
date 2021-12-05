@@ -9,7 +9,8 @@ services:
     depends_on:
       - db
   db:
-    image: "mcr.microsoft.com/mssql/server"
-    environment:
-      SA_PASSWORD: mysuperpass!
-      ACCEPT_EULA: "Y"
+    image: "postgres" # use latest official postgres version
+    env_file:
+      - .env # configure postgres
+#    volumes:
+#      - database-data:/var/lib/postgresql/data/ # persist data even
