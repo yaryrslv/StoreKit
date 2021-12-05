@@ -5,7 +5,10 @@
     <AssemblyName>StoreKit.Bootstrapper</AssemblyName>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <LangVersion>default</LangVersion>
-  </PropertyGroup>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+    <RunAnalyzers>false</RunAnalyzers>
+</PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>Bootstrapper.xml</DocumentationFile>
 

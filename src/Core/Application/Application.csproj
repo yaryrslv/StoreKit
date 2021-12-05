@@ -3,6 +3,9 @@
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>StoreKit.Application</RootNamespace>
     <AssemblyName>StoreKit.Application</AssemblyName>
+      <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+      <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+      <RunAnalyzers>false</RunAnalyzers>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>Application.xml</DocumentationFile>

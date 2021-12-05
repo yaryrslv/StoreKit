@@ -4,7 +4,10 @@
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>StoreKit.Infrastructure</RootNamespace>
     <AssemblyName>StoreKit.Infrastructure</AssemblyName>
-  </PropertyGroup>
+       <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+       <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+       <RunAnalyzers>false</RunAnalyzers>
+   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>Infrastructure.xml</DocumentationFile>
     <CodeAnalysisRuleSet>..\..\dotnet.ruleset</CodeAnalysisRuleSet>

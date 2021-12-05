@@ -4,6 +4,9 @@
         <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>StoreKit.Shared.DTOs</RootNamespace>
         <AssemblyName>StoreKit.Shared.DTOs</AssemblyName>
+        <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+        <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+        <RunAnalyzers>false</RunAnalyzers>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DocumentationFile>Shared.DTOs.xml</DocumentationFile>
