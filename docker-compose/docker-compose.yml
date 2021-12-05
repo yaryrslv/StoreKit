@@ -7,7 +7,7 @@ services:
       - "44360:80"
     build:
       context: ../src
-      dockerfile: ../src/Dockerfile
+      dockerfile: Dockerfile
     depends_on:
       - db
   db:
