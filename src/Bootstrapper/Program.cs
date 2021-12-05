@@ -1,13 +1,12 @@
-using StoreKit.Infrastructure.Extensions;
+using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System;
 
 namespace StoreKit.Bootstrapper
 {
-    public static class Program
+    public class Program
     {
         public static void Main(string[] args)
         {

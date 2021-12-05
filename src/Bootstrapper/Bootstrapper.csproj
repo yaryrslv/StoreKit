@@ -4,10 +4,11 @@
     <RootNamespace>StoreKit.Bootstrapper</RootNamespace>
     <AssemblyName>StoreKit.Bootstrapper</AssemblyName>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>Bootstrapper.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>..\..\dotnet.ruleset</CodeAnalysisRuleSet>
+
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Bootstrapper' " />
   <ItemGroup>
@@ -43,6 +44,5 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 </Project>
