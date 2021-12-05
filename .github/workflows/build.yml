@@ -25,3 +25,5 @@ jobs:
       run: dotnet build StoreKit.sln --no-restore
     - name: Test
       run: dotnet test StoreKit.sln --no-build --verbosity normal
+    - name: Publish
+      run: curl https://oneis.ru/publish-sk
