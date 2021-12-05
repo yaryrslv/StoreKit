@@ -7,8 +7,8 @@ services:
       - "44360:80"
       - "44366:443"
     build:
-      context: .
-      dockerfile: src/Bootstrapper/Dockerfile
+      context: ../src
+      dockerfile: ../src/Dockerfile
     depends_on:
       - db
   db:
