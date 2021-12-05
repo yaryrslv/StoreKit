@@ -5,7 +5,6 @@ services:
     image: ${DOCKER_REGISTRY-}bootstrapper
     ports:
       - "44360:80"
-      - "44366:443"
     build:
       context: ../src
       dockerfile: ../src/Dockerfile
