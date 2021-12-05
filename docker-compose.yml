@@ -3,6 +3,9 @@ version: '3.4'
 services:
   bootstrapper:
     image: ${DOCKER_REGISTRY-}bootstrapper
+    ports:
+      - "44360:80"
+      - "44366:443"
     build:
       context: .
       dockerfile: src/Bootstrapper/Dockerfile
