@@ -9,7 +9,11 @@ namespace StoreKit.Application.Abstractions.Services.Catalog
 {
     public interface ITagsService
     {
-        Task<Result<TagType>> GetTagTypeAsync(GetTagsRequest request);
-        Task<Result<Guid>> PostTagTypeAsync(PostTagsRequest request, TagType tagType);
+        Task<Result<TagType>> GetTagTypeByProductAsync(Guid productId);
+        Task<Result<Guid>> PostTagTypeByProductAsync(PostTagTypeRequest request);
+        Task<Result<List<Tag>>> GetTagsByTagTypeName(string TagTypeName);
+        Task<Result<List<Tag>>> PostTagsByTagTypeName(PostTagsRequest request);
+        Task<Result<List<TagType>>> GetUniqueTagTypes();
+
     }
 }

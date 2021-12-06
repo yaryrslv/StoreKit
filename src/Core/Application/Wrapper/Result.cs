@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using StoreKit.Domain.Entities.Catalog;
 
 namespace StoreKit.Application.Wrapper
 {
@@ -172,7 +173,7 @@ namespace StoreKit.Application.Wrapper
             return new() { Succeeded = true, Data = data, Messages = messages };
         }
 
-        public static new Task<Result<T>> SuccessAsync()
+        public static Task<Result<T>> SuccessAsync(IEnumerable<TagType> uniqueTagTypes)
         {
             return Task.FromResult(Success());
         }
