@@ -1,15 +1,22 @@
-﻿using StoreKit.Application.Abstractions.Services.Catalog;
+﻿using System;
+using StoreKit.Application.Abstractions.Services.Identity;
+using StoreKit.Infrastructure.SwaggerFilters;
+using StoreKit.Shared.DTOs.Identity.Requests;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
+using StoreKit.Application.Abstractions.Services.Catalog;
 using StoreKit.Domain.Constants;
 using StoreKit.Infrastructure.Identity.Permissions;
 using StoreKit.Shared.DTOs.Catalog;
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
-using System;
-using System.Threading.Tasks;
 
 namespace StoreKit.Bootstrapper.Controllers.v1
 {
-    public class NewsController : BaseController
+    [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    public class NewsController : ControllerBase
     {
         private readonly INewsService _service;
 
@@ -19,9 +26,10 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         }
 
         [HttpPost("search")]
-        [MustHavePermission(PermissionConstants.News.Search)]
+        [AllowAnonymous]
+        [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
         [SwaggerOperation(Summary = "Search News using available Filters.")]
-        public async Task<IActionResult> SearchAsync(NewsListFilter filter)
+        public async Task<IActionResult> SearchAsync(NewsListFilter filter, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
         {
             var news = await _service.SearchAsync(filter);
             return Ok(news);

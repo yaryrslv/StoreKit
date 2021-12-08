@@ -4,11 +4,16 @@ using StoreKit.Infrastructure.Identity.Permissions;
 using StoreKit.Shared.DTOs.Catalog;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using StoreKit.Infrastructure.SwaggerFilters;
 
 namespace StoreKit.Bootstrapper.Controllers.v1
 {
-    public class ProductsController : BaseController
+    [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    public class ProductsController : ControllerBase
     {
         private readonly IProductService _service;
 
@@ -18,16 +23,18 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         }
 
         [HttpGet("{id}")]
-        [MustHavePermission(PermissionConstants.Products.View)]
-        public async Task<IActionResult> GetAsync(Guid id)
+        [AllowAnonymous]
+        [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
+        public async Task<IActionResult> GetAsync(Guid id, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
         {
             var product = await _service.GetProductDetailsAsync(id);
             return Ok(product);
         }
 
         [HttpPost("search")]
-        [MustHavePermission(PermissionConstants.Products.Search)]
-        public async Task<IActionResult> SearchAsync(ProductListFilter filter)
+        [AllowAnonymous]
+        [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
+        public async Task<IActionResult> SearchAsync(ProductListFilter filter, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
         {
             var products = await _service.SearchAsync(filter);
             return Ok(products);
