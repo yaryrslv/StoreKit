@@ -16,25 +16,19 @@ namespace StoreKit.Domain.Entities.Catalog
         [Column(TypeName = "jsonb")]
         public TagType TagType { get; set; }
 
-        public Product(string name, string description, decimal rate, TagType tagType, string imagePath)
+        public Product(string name, string description, decimal rate, string imagePath)
         {
             Name = name;
             Description = description;
             Rate = rate;
             ImagePath = imagePath;
-            TagType = tagType;
         }
 
-        protected Product()
-        {
-        }
-
-        public Product Update(string name, string description, decimal rate, TagType tags, string imagePath)
+        public Product Update(string name, string description, decimal rate, string imagePath)
         {
             if (name != null && !Name.NullToString().Equals(name)) Name = name;
             if (description != null && !Description.NullToString().Equals(description)) Description = description;
             if (Rate != rate) Rate = rate;
-            TagType = tags;
             if (imagePath != null && !ImagePath.NullToString().Equals(imagePath)) ImagePath = imagePath;
             return this;
         }
