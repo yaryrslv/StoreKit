@@ -109,6 +109,11 @@ namespace StoreKit.Infrastructure.Identity.Services
                         _jobService.Enqueue(() => _mailService.SendAsync(mailRequest));
                         messages.Add(_localizer[$"Please check {user.Email} to verify your account!"]);
                     }
+                    else
+                    {
+                        user.EmailConfirmed = true;
+                        user.IsActive = true;
+                    }
 
                     return await Result<string>.SuccessAsync(user.Id, messages: messages);
                 }
