@@ -36,21 +36,21 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         }
 
         [HttpPost]
-        [MustHavePermission(PermissionConstants.News.Register)]
+        [MustHavePermission(PermissionConstants.News.Create)]
         public async Task<IActionResult> CreateAsync(CreateNewsRequest request)
         {
             return Ok(await _service.CreateNewsAsync(request));
         }
 
         [HttpPut("{id}")]
-        [MustHavePermission(PermissionConstants.News.Update)]
+        [MustHavePermission(PermissionConstants.News.Edit)]
         public async Task<IActionResult> UpdateAsync(UpdateNewsRequest request, Guid id)
         {
             return Ok(await _service.UpdateNewsAsync(request, id));
         }
 
         [HttpDelete("{id}")]
-        [MustHavePermission(PermissionConstants.News.Remove)]
+        [MustHavePermission(PermissionConstants.News.Delete)]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             var newsId = await _service.DeleteNewsAsync(id);

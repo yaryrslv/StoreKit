@@ -41,7 +41,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         }
 
         [HttpGet("dapper")]
-        [MustHavePermission(PermissionConstants.Products.View)]
+        [MustHavePermission(PermissionConstants.TagTypes.View)]
         public async Task<IActionResult> GetDapperAsync(Guid id)
         {
             var products = await _service.GetByIdUsingDapperAsync(id);
@@ -49,21 +49,21 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         }
 
         [HttpPost]
-        [MustHavePermission(PermissionConstants.Products.Register)]
+        [MustHavePermission(PermissionConstants.Products.Create)]
         public async Task<IActionResult> CreateAsync(CreateProductRequest request)
         {
             return Ok(await _service.CreateProductAsync(request));
         }
 
         [HttpPut("{id}")]
-        [MustHavePermission(PermissionConstants.Products.Update)]
+        [MustHavePermission(PermissionConstants.Products.Edit)]
         public async Task<IActionResult> UpdateAsync(UpdateProductRequest request, Guid id)
         {
             return Ok(await _service.UpdateProductAsync(request, id));
         }
 
         [HttpDelete("{id}")]
-        [MustHavePermission(PermissionConstants.Products.Remove)]
+        [MustHavePermission(PermissionConstants.Products.Delete)]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             var productId = await _service.DeleteProductAsync(id);

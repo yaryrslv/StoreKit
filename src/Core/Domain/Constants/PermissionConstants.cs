@@ -27,10 +27,10 @@ namespace StoreKit.Domain.Constants
         public static class Products
         {
             public const string View = "Permissions.Products.View";
+            public const string Create = "Permissions.Products.Create";
+            public const string Edit = "Permissions.Products.Edit";
+            public const string Delete = "Permissions.Products.Delete";
             public const string Search = "Permissions.Products.Search";
-            public const string Register = "Permissions.Products.Register";
-            public const string Update = "Permissions.Products.Update";
-            public const string Remove = "Permissions.Products.Remove";
         }
 
         [DisplayName("Brands")]
@@ -38,10 +38,10 @@ namespace StoreKit.Domain.Constants
         public static class Brands
         {
             public const string View = "Permissions.Brands.View";
+            public const string Create = "Permissions.Brands.Create";
+            public const string Edit = "Permissions.Brands.Edit";
+            public const string Delete = "Permissions.Brands.Delete";
             public const string Search = "Permissions.Brands.Search";
-            public const string Register = "Permissions.Brands.Register";
-            public const string Update = "Permissions.Brands.Update";
-            public const string Remove = "Permissions.Brands.Remove";
         }
 
         [DisplayName("News")]
@@ -49,10 +49,10 @@ namespace StoreKit.Domain.Constants
         public static class News
         {
             public const string View = "Permissions.News.View";
+            public const string Create = "Permissions.News.Create";
+            public const string Edit = "Permissions.News.Edit";
+            public const string Delete = "Permissions.News.Delete";
             public const string Search = "Permissions.News.Search";
-            public const string Register = "Permissions.News.Register";
-            public const string Update = "Permissions.News.Update";
-            public const string Remove = "Permissions.News.Remove";
         }
 
         [DisplayName("Role Claims")]
@@ -64,6 +64,17 @@ namespace StoreKit.Domain.Constants
             public const string Edit = "Permissions.RoleClaims.Edit";
             public const string Delete = "Permissions.RoleClaims.Delete";
             public const string Search = "Permissions.RoleClaims.Search";
+        }
+
+        [DisplayName("TagTypes")]
+        [Description("TagTypes Permissions")]
+        public static class TagTypes
+        {
+            public const string View = "Permissions.TagTypes.View";
+            public const string Create = "Permissions.TagTypes.Create";
+            public const string Edit = "Permissions.TagTypes.Edit";
+            public const string Delete = "Permissions.TagTypes.Delete";
+            public const string Search = "Permissions.TagTypes.Search";
         }
     }
 }
