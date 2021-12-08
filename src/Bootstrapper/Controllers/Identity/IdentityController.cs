@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using StoreKit.Application.Abstractions.Services.Identity;
 using StoreKit.Domain.Constants;
 using StoreKit.Infrastructure.Identity.Permissions;
@@ -5,6 +6,7 @@ using StoreKit.Shared.DTOs.Identity.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using StoreKit.Infrastructure.SwaggerFilters;
 
 namespace StoreKit.Bootstrapper.Controllers.Identity
 {
@@ -24,8 +26,9 @@ namespace StoreKit.Bootstrapper.Controllers.Identity
         }
 
         [HttpPost("register")]
-        [MustHavePermission(PermissionConstants.Identity.Register)]
-        public async Task<IActionResult> RegisterAsync(RegisterRequest request)
+        [AllowAnonymous]
+        [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
+        public async Task<IActionResult> RegisterAsync(RegisterRequest request, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
         {
             string baseUrl = $"{this.Request.Scheme}://{this.Request.Host.Value.ToString()}{this.Request.PathBase.Value.ToString()}";
             string origin = string.IsNullOrEmpty(Request.Headers["origin"].ToString()) ? baseUrl : Request.Headers["origin"].ToString();
