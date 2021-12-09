@@ -39,7 +39,6 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         }
 
         [HttpGet("get-tag-by-tag-type-name/{tagTypeName}")]
-        [HttpGet("get-tag-type-by-product-id/{productId}")]
         [AllowAnonymous]
         [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
         public async Task<IActionResult> GetTagsByTagTypeName(string tagTypeName, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
@@ -56,7 +55,6 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         }
 
         [HttpGet("get-unique-tag-types")]
-        [HttpGet("get-tag-type-by-product-id/{productId}")]
         [AllowAnonymous]
         [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
         public async Task<IActionResult> GetUniqueTagTypes([FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
