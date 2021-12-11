@@ -15,7 +15,7 @@ namespace StoreKit.Domain.Entities.Catalog
         {
             Title = title;
             Description = description;
-            CreationTime = DateTime.Now;
+            CreationTime = DateTime.Now.ToUniversalTime();
         }
 
         public News Update(string name, string description)
