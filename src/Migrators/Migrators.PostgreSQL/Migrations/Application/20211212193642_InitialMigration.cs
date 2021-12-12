@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using System;
+using StoreKit.Domain.Entities.Catalog;
+
+#nullable disable
 
 namespace Migrators.PostgreSQL.Migrations.Application
 {
-    public partial class initial : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,7 +22,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Type = table.Column<string>(type: "text", nullable: true),
                     TableName = table.Column<string>(type: "text", nullable: true),
-                    DateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     OldValues = table.Column<string>(type: "text", nullable: true),
                     NewValues = table.Column<string>(type: "text", nullable: true),
                     AffectedColumns = table.Column<string>(type: "text", nullable: true),
@@ -31,23 +34,47 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 });
 
             migrationBuilder.CreateTable(
-                name: "Brands",
+                name: "News",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TenantKey = table.Column<string>(type: "text", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_News", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
+                    Rate = table.Column<decimal>(type: "numeric", nullable: false),
                     TenantKey = table.Column<string>(type: "text", nullable: true),
+                    ImagePath = table.Column<string>(type: "text", nullable: true),
+                    TagType = table.Column<TagType>(type: "jsonb", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastModifiedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    DeletedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    LastModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Brands", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -78,7 +105,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     ImageUrl = table.Column<string>(type: "text", nullable: true),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     RefreshToken = table.Column<string>(type: "text", nullable: true),
-                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     TenantKey = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -101,35 +128,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    Rate = table.Column<decimal>(type: "numeric", nullable: false),
-                    TenantKey = table.Column<string>(type: "text", nullable: true),
-                    ImagePath = table.Column<string>(type: "text", nullable: true),
-                    BrandId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastModifiedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    DeletedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Products_Brands_BrandId",
-                        column: x => x.BrandId,
-                        principalTable: "Brands",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RoleClaims",
                 schema: "Identity",
                 columns: table => new
@@ -138,6 +136,12 @@ namespace Migrators.PostgreSQL.Migrations.Application
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Description = table.Column<string>(type: "text", nullable: true),
                     TenantKey = table.Column<string>(type: "text", nullable: true),
+                    Group = table.Column<string>(type: "text", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    RoleId1 = table.Column<string>(type: "text", nullable: true),
                     RoleId = table.Column<string>(type: "text", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
@@ -152,6 +156,12 @@ namespace Migrators.PostgreSQL.Migrations.Application
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoleClaims_Roles_RoleId1",
+                        column: x => x.RoleId1,
+                        principalSchema: "Identity",
+                        principalTable: "Roles",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -249,15 +259,16 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_BrandId",
-                table: "Products",
-                column: "BrandId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
                 schema: "Identity",
                 table: "RoleClaims",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RoleClaims_RoleId1",
+                schema: "Identity",
+                table: "RoleClaims",
+                column: "RoleId1");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
@@ -304,6 +315,9 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 name: "AuditTrails");
 
             migrationBuilder.DropTable(
+                name: "News");
+
+            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
@@ -325,9 +339,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
             migrationBuilder.DropTable(
                 name: "UserTokens",
                 schema: "Identity");
-
-            migrationBuilder.DropTable(
-                name: "Brands");
 
             migrationBuilder.DropTable(
                 name: "Roles",

@@ -13,8 +13,8 @@ using StoreKit.Infrastructure.Persistence;
 namespace Migrators.PostgreSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211208203520_UpdatedMigration")]
-    partial class UpdatedMigration
+    [Migration("20211212193642_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
