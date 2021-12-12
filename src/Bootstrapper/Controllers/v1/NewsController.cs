@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using StoreKit.Application.Abstractions.Services.Identity;
 using StoreKit.Infrastructure.SwaggerFilters;
 using StoreKit.Shared.DTOs.Identity.Requests;
@@ -6,9 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Threading.Tasks;
 using Bogus;
 using StoreKit.Application.Abstractions.Services.Catalog;
+using StoreKit.Application.Wrapper;
 using StoreKit.Domain.Constants;
 using StoreKit.Infrastructure.Identity.Permissions;
 using StoreKit.Shared.DTOs.Catalog;
@@ -48,6 +51,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [AllowAnonymous]
         [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
         [SwaggerOperation(Summary = "Search News using available Filters.")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PaginatedResult<NewsDto>))]
         public async Task<IActionResult> SearchAsync(NewsListFilter filter, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
         {
             var news = await _service.SearchAsync(filter);
@@ -56,6 +60,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
 
         [HttpPost]
         [MustHavePermission(PermissionConstants.News.Create)]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Result<Guid>))]
         public async Task<IActionResult> CreateAsync(CreateNewsRequest request)
         {
             return Ok(await _service.CreateNewsAsync(request));
@@ -63,6 +68,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
 
         [HttpPut("{id}")]
         [MustHavePermission(PermissionConstants.News.Edit)]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Result<Guid>))]
         public async Task<IActionResult> UpdateAsync(UpdateNewsRequest request, Guid id)
         {
             return Ok(await _service.UpdateNewsAsync(request, id));
@@ -70,6 +76,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
 
         [HttpDelete("{id}")]
         [MustHavePermission(PermissionConstants.News.Delete)]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Result<Guid>))]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             var newsId = await _service.DeleteNewsAsync(id);
