@@ -24,7 +24,7 @@ namespace StoreKit.Application.Services.Catalog
         public async Task<Result<Guid>> CreateNewsAsync(CreateNewsRequest request)
         {
             var brandExists = await _repository.ExistsAsync<News>(a => a.Title == request.Title);
-            if (brandExists) throw new EntityAlreadyExistsException(string.Format(_localizer["news.alreadyexists"], request.Title));
+            //if (brandExists) throw new EntityAlreadyExistsException(string.Format(_localizer["news.alreadyexists"], request.Title));
             var news = new News(request.Title, request.Description);
             var newsId = await _repository.CreateAsync<News>(news);
             await _repository.SaveChangesAsync();

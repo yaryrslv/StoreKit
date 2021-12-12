@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Bogus;
 using StoreKit.Application.Abstractions.Services.Catalog;
 using StoreKit.Domain.Constants;
 using StoreKit.Infrastructure.Identity.Permissions;
@@ -23,6 +24,24 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         public NewsController(INewsService service)
         {
             _service = service;
+        }
+
+        [HttpPost("generate")]
+        [AllowAnonymous]
+        [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
+        [SwaggerOperation(Summary = "Search News using available Filters.")]
+        public async Task<IActionResult> GenerateAsync(int generationCount)
+        {
+            var testNewsGenerator = new Faker<CreateNewsRequest>()
+                .RuleFor(u => u.Title, (f, u) => f.Lorem.Sentence())
+                .RuleFor(u => u.Description, (f, u) => f.Lorem.Paragraph());
+            var testNewsList = testNewsGenerator.Generate(generationCount);
+            foreach (var testNewsItem in testNewsList)
+            {
+                await _service.CreateNewsAsync(testNewsItem);
+            }
+
+            return Ok();
         }
 
         [HttpPost("search")]

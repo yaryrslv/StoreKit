@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Bogus;
 using Microsoft.AspNetCore.Authorization;
+using StoreKit.Domain.Entities.Catalog;
 using StoreKit.Infrastructure.SwaggerFilters;
 
 namespace StoreKit.Bootstrapper.Controllers.v1
@@ -20,6 +22,32 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         public ProductsController(IProductService service)
         {
             _service = service;
+        }
+
+        [HttpPost("generate")]
+        [AllowAnonymous]
+        [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
+        public async Task<IActionResult> GenerateAsync(int generationCount)
+        {
+            var testProductsGnerator = new Faker<CreateProductRequest>()
+                .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
+                .RuleFor(u => u.Description, (f, u) => f.Commerce.ProductDescription())
+                .RuleFor(u => u.Rate, (f, u) => 1)
+                .RuleFor(u => u.TagType, (f, u) => new TagType()
+                {
+                    Name = new Guid().ToString()
+                });
+            var testProductsList = testProductsGnerator.Generate(generationCount);
+            foreach (var testProductItem in testProductsList)
+            {
+                var testTagsGenerator = new Faker<Tag>()
+                    .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductMaterial())
+                    .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductDescription());
+                testProductItem.TagType.Tags = testTagsGenerator.Generate(8);
+                await _service.CreateProductAsync(testProductItem);
+            }
+
+            return Ok();
         }
 
         [HttpGet("{id}")]

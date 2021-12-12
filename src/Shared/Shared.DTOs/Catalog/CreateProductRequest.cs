@@ -12,7 +12,7 @@ namespace StoreKit.Shared.DTOs.Catalog
         public string Description { get; set; }
         public decimal Rate { get; set; }
         [Column(TypeName = "jsonb")]
-        public TagType Tags { get; set; }
+        public TagType TagType { get; set; }
         public FileUploadRequest Image { get; set; }
     }
 }
