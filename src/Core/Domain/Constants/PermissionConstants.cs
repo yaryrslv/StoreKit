@@ -54,6 +54,16 @@ namespace StoreKit.Domain.Constants
             public const string Delete = "Permissions.News.Delete";
             public const string Search = "Permissions.News.Search";
         }
+        [DisplayName("Comments")]
+        [Description("Comments Permissions")]
+        public static class Comments
+        {
+            public const string View = "Permissions.Comments.View";
+            public const string Create = "Permissions.Comments.Create";
+            public const string Edit = "Permissions.Comments.Edit";
+            public const string Delete = "Permissions.Comments.Delete";
+            public const string Search = "Permissions.Comments.Search";
+        }
 
         [DisplayName("Role Claims")]
         [Description("Role Claims Permissions")]

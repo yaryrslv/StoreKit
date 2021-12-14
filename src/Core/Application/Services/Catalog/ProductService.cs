@@ -14,13 +14,13 @@ using System.Threading.Tasks;
 
 namespace StoreKit.Application.Services.Catalog
 {
-    public class ProductService : IProductService
+    public class ProductsService : IProductService
     {
-        private readonly IStringLocalizer<ProductService> _localizer;
+        private readonly IStringLocalizer<ProductsService> _localizer;
         private readonly IFileStorageService _file;
         private readonly IRepositoryAsync _repository;
 
-        public ProductService(IRepositoryAsync repository, IStringLocalizer<ProductService> localizer, IFileStorageService file)
+        public ProductsService(IRepositoryAsync repository, IStringLocalizer<ProductsService> localizer, IFileStorageService file)
         {
             _repository = repository;
             _localizer = localizer;

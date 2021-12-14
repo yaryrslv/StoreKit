@@ -27,6 +27,7 @@ namespace StoreKit.Infrastructure.Persistence
 
         public DbSet<Product> Products { get; set; }
         public DbSet<News> News { get; set; }
+        public DbSet<Comments> Comments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
