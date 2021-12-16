@@ -42,8 +42,8 @@ namespace StoreKit.Bootstrapper.Controllers.v1
             foreach (var testProductItem in testProductsList)
             {
                 var testTagsGenerator = new Faker<Tag>()
-                    .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductMaterial())
-                    .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductDescription());
+                    .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
+                    .RuleFor(u => u.Value, (f, u) => f.Commerce.Price());
                 testProductItem.Tags = testTagsGenerator.Generate(8);
                 await _service.CreateProductAsync(testProductItem);
             }

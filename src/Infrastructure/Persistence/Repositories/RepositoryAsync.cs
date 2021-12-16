@@ -98,14 +98,12 @@ namespace StoreKit.Infrastructure.Persistence.Repositories
             }
         }
 
-        public async Task<PaginatedResult<TDto>> GetSearchResultsAsync<T, TDto>(int pageNumber, int pageSize = int.MaxValue, string[] orderBy = null, Search advancedSearch = null, string keyword = null, Expression<Func<T, bool>> expression = null, CancellationToken cancellationToken = default)
+        public async Task<PaginatedResult<TDto>> GetSearchResultsAsync<T, TDto>(int pageNumber, int pageSize = int.MaxValue, string[] orderBy = null, string keyword = null, Expression<Func<T, bool>> expression = null, CancellationToken cancellationToken = default)
         where T : BaseEntity
         where TDto : IDto
         {
             IQueryable<T> query = _dbContext.Set<T>();
             if (expression != null) query = query.Where(expression);
-            if (advancedSearch != null && advancedSearch.Fields.Count > 0 && !string.IsNullOrEmpty(advancedSearch.Keyword))
-                query = query.AdvancedSearch(advancedSearch);
             else if (!string.IsNullOrEmpty(keyword))
                 query = query.SearchByKeyword(keyword);
             string ordering = new OrderByConverter().ConvertBack(orderBy);

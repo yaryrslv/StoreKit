@@ -10,6 +10,8 @@ using StoreKit.Shared.DTOs.Catalog;
 using Mapster;
 using Microsoft.Extensions.Localization;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace StoreKit.Application.Services.Catalog
@@ -74,7 +76,23 @@ namespace StoreKit.Application.Services.Catalog
 
         public async Task<PaginatedResult<ProductDto>> SearchAsync(ProductListFilter filter)
         {
-            var products = await _repository.GetSearchResultsAsync<Product, ProductDto>(filter.PageNumber, filter.PageSize, filter.OrderBy, filter.AdvancedSearch, filter.Keyword);
+            var products = await _repository.GetSearchResultsAsync<Product, ProductDto>(filter.PageNumber, filter.PageSize, filter.OrderBy, filter.Keyword);
+            if (filter.Tags != null && filter.Tags.Count() > 0)
+            {
+                var findProducts = products.Data.Where(i =>
+                {
+                    var intersectedTags = i.Tags.Select(t => (t.Name+t.Value).GetHashCode())
+                        .Intersect(filter.Tags.Select(t => (t.Name+t.Value).GetHashCode())).ToList();
+                    if (intersectedTags.Count > 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }).ToList();
+                if(findProducts.Count > 0)
+                    return new PaginatedResult<ProductDto>(products.Succeeded, findProducts, products.Messages, products.TotalCount, products.CurrentPage, products.PageSize);
+            }
+
             return products;
         }
     }

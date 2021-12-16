@@ -24,7 +24,7 @@ namespace StoreKit.Application.Services.Catalog
 
         public async Task<PaginatedResult<CommentsDto>> SearchAsync(CommentsListFilter filter)
         {
-            var newsCollection = await _repository.GetSearchResultsAsync<Comments, CommentsDto>(filter.PageNumber, filter.PageSize, filter.OrderBy, filter.AdvancedSearch, filter.Keyword);
+            var newsCollection = await _repository.GetSearchResultsAsync<Comments, CommentsDto>(filter.PageNumber, filter.PageSize, filter.OrderBy, filter.Keyword);
             return newsCollection;
         }
 

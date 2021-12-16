@@ -40,7 +40,7 @@ namespace StoreKit.Application.Services.Catalog
 
         public async Task<PaginatedResult<NewsDto>> SearchAsync(NewsListFilter filter)
         {
-            var newsCollection = await _repository.GetSearchResultsAsync<News, NewsDto>(filter.PageNumber, filter.PageSize, filter.OrderBy, filter.AdvancedSearch, filter.Keyword);
+            var newsCollection = await _repository.GetSearchResultsAsync<News, NewsDto>(filter.PageNumber, filter.PageSize, filter.OrderBy, filter.Keyword);
             return newsCollection;
         }
 
