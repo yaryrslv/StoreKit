@@ -30,4 +30,11 @@
     </PackageReference>
     <AdditionalFiles Include="..\..\..\stylecop.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Abstractions\Services\Catalog\ITagsService.cs" />
+    <Compile Remove="Services\Catalog\TagsService.cs" />
+    <Compile Remove="Validators\Catalog\CreateBrandRequestValidator.cs" />
+    <Compile Remove="Validators\Catalog\UpdateBrandRequestValidator.cs" />
+    <Compile Remove="Validators\Catalog\UpdateProductRequestValidator.cs" />
+  </ItemGroup>
 </Project>

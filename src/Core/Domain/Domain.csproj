@@ -25,4 +25,7 @@
     <AdditionalFiles Include="..\..\..\stylecop.json" />
     <PackageReference Remove="StyleCop.Analyzers" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Entities\Catalog\TagType.cs" />
+  </ItemGroup>
 </Project>

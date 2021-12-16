@@ -1,8 +1,7 @@
 using StoreKit.Domain.Contracts;
 using StoreKit.Domain.Extensions;
-using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json;
 
 namespace StoreKit.Domain.Entities.Catalog
 {
@@ -14,22 +13,24 @@ namespace StoreKit.Domain.Entities.Catalog
         public string TenantKey { get; set; }
         public string ImagePath { get; set; }
         [Column(TypeName = "jsonb")]
-        public TagType TagType { get; set; }
+        public List<Tag> Tags { get; set; }
 
-        public Product(string name, string description, decimal rate, string imagePath)
+        public Product(string name, string description, decimal rate, string imagePath, List<Tag> tags)
         {
             Name = name;
             Description = description;
             Rate = rate;
             ImagePath = imagePath;
+            Tags = tags;
         }
 
-        public Product Update(string name, string description, decimal rate, string imagePath)
+        public Product Update(string name, string description, decimal rate, string imagePath, List<Tag> tags)
         {
             if (name != null && !Name.NullToString().Equals(name)) Name = name;
             if (description != null && !Description.NullToString().Equals(description)) Description = description;
             if (Rate != rate) Rate = rate;
             if (imagePath != null && !ImagePath.NullToString().Equals(imagePath)) ImagePath = imagePath;
+            if (tags != null && !ImagePath.NullToString().Equals(tags)) Tags = tags;
             return this;
         }
     }

@@ -26,4 +26,10 @@
   <ItemGroup>
     <Folder Include="Migrations\Application" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Migrations\Application\20211212193642_InitialMigration.cs" />
+    <Compile Remove="Migrations\Application\20211212193642_InitialMigration.Designer.cs" />
+    <Compile Remove="Migrations\Application\20211214181808_CreateComments.cs" />
+    <Compile Remove="Migrations\Application\20211214181808_CreateComments.Designer.cs" />
+  </ItemGroup>
 </Project>

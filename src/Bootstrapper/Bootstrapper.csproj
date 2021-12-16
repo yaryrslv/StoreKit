@@ -54,4 +54,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Controllers\v1\TagsController.cs" />
+  </ItemGroup>
 </Project>

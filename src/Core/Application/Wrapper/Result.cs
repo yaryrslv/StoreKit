@@ -173,7 +173,7 @@ namespace StoreKit.Application.Wrapper
             return new() { Succeeded = true, Data = data, Messages = messages };
         }
 
-        public static Task<Result<T>> SuccessAsync(IEnumerable<TagType> uniqueTagTypes)
+        public static Task<Result<T>> SuccessAsync(IEnumerable<Tag> uniqueTagTypes)
         {
             return Task.FromResult(Success());
         }

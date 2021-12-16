@@ -32,7 +32,7 @@ namespace StoreKit.Application.Services.Catalog
             var productExists = await _repository.ExistsAsync<Product>(a => a.Name == request.Name);
             if (productExists) throw new EntityAlreadyExistsException(string.Format(_localizer["product.alreadyexists"], request.Name));
             string productImagePath = await _file.UploadAsync<Product>(request.Image, FileType.Image);
-            var product = new Product(request.Name, request.Description, request.Rate, productImagePath);
+            var product = new Product(request.Name, request.Description, request.Rate, productImagePath, request.Tags);
             var productId = await _repository.CreateAsync<Product>(product);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(productId);
@@ -44,7 +44,7 @@ namespace StoreKit.Application.Services.Catalog
             if (product == null) throw new EntityNotFoundException(string.Format(_localizer["product.notfound"], id));
             string productImagePath = string.Empty;
             if (request.Image != null) productImagePath = await _file.UploadAsync<Product>(request.Image, FileType.Image);
-            var updatedProduct = product.Update(request.Name, request.Description, request.Rate, productImagePath);
+            var updatedProduct = product.Update(request.Name, request.Description, request.Rate, productImagePath, request.Tags);
             await _repository.UpdateAsync<Product>(updatedProduct);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(id);
@@ -60,7 +60,7 @@ namespace StoreKit.Application.Services.Catalog
         public async Task<Result<ProductDetailsDto>> GetProductDetailsAsync(Guid id)
         {
             var spec = new BaseSpecification<Product>();
-            spec.Includes.Add(a => a.TagType);
+            spec.Includes.Add(a => a.Tags);
             var product = await _repository.GetByIdAsync<Product, ProductDetailsDto>(id, spec);
             return await Result<ProductDetailsDto>.SuccessAsync(product);
         }

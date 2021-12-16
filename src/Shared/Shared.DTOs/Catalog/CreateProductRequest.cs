@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using StoreKit.Domain.Entities.Catalog;
@@ -12,7 +13,7 @@ namespace StoreKit.Shared.DTOs.Catalog
         public string Description { get; set; }
         public decimal Rate { get; set; }
         [Column(TypeName = "jsonb")]
-        public TagType TagType { get; set; }
+        public List<Tag> Tags { get; set; }
         public FileUploadRequest Image { get; set; }
     }
 }

@@ -13,6 +13,6 @@ namespace StoreKit.Shared.DTOs.Catalog
         public decimal Rate { get; set; }
         public string ImagePath { get; set; }
         [Column(TypeName = "jsonb")]
-        public TagType TagType { get; set; }
+        public Tag Tags { get; set; }
     }
 }

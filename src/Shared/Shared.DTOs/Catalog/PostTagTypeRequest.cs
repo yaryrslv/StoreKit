@@ -6,6 +6,6 @@ namespace StoreKit.Shared.DTOs.Catalog
     public class PostTagTypeRequest : IMustBeValid
     {
         public Guid ProductId { get; set; }
-        public TagType TagType { get; set; }
+        public Tag TagType { get; set; }
     }
 }

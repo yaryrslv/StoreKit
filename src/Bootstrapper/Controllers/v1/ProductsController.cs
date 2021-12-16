@@ -4,7 +4,9 @@ using StoreKit.Infrastructure.Identity.Permissions;
 using StoreKit.Shared.DTOs.Catalog;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Bogus;
@@ -35,18 +37,14 @@ namespace StoreKit.Bootstrapper.Controllers.v1
             var testProductsGnerator = new Faker<CreateProductRequest>()
                 .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
                 .RuleFor(u => u.Description, (f, u) => f.Commerce.ProductDescription())
-                .RuleFor(u => u.Rate, (f, u) => 1)
-                .RuleFor(u => u.TagType, (f, u) => new TagType()
-                {
-                    Name = new Guid().ToString()
-                });
+                .RuleFor(u => u.Rate, (f, u) => 1);
             var testProductsList = testProductsGnerator.Generate(generationCount);
             foreach (var testProductItem in testProductsList)
             {
                 var testTagsGenerator = new Faker<Tag>()
                     .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductMaterial())
                     .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductDescription());
-                testProductItem.TagType.Tags = testTagsGenerator.Generate(8);
+                testProductItem.Tags = testTagsGenerator.Generate(8);
                 await _service.CreateProductAsync(testProductItem);
             }
 
