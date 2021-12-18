@@ -46,6 +46,11 @@ namespace StoreKit.Infrastructure.Persistence.Repositories
             var properties = typeof(T).GetProperties();
             foreach (var propertyInfo in properties)
             {
+                if (propertyInfo.Name == "Tags")
+                {
+                    break;
+                }
+
                 if (propertyInfo.GetGetMethod().IsVirtual)
                     continue;
 

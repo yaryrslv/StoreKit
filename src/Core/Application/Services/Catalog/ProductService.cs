@@ -34,7 +34,7 @@ namespace StoreKit.Application.Services.Catalog
             var productExists = await _repository.ExistsAsync<Product>(a => a.Name == request.Name);
             if (productExists) throw new EntityAlreadyExistsException(string.Format(_localizer["product.alreadyexists"], request.Name));
             string productImagePath = await _file.UploadAsync<Product>(request.Image, FileType.Image);
-            var product = new Product(request.Name, request.Description, request.Rate, productImagePath, request.Tags);
+            var product = new Product(request.Name, request.Description, productImagePath, request.Tags);
             var productId = await _repository.CreateAsync<Product>(product);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(productId);

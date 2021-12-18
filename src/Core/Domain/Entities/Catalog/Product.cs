@@ -9,17 +9,15 @@ namespace StoreKit.Domain.Entities.Catalog
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public decimal Rate { get; private set; }
         public string TenantKey { get; set; }
         public string ImagePath { get; set; }
         [Column(TypeName = "jsonb")]
         public List<Tag> Tags { get; set; }
 
-        public Product(string name, string description, decimal rate, string imagePath, List<Tag> tags)
+        public Product(string name, string description, string imagePath, List<Tag> tags)
         {
             Name = name;
             Description = description;
-            Rate = rate;
             ImagePath = imagePath;
             Tags = tags;
         }
@@ -28,7 +26,6 @@ namespace StoreKit.Domain.Entities.Catalog
         {
             if (name != null && !Name.NullToString().Equals(name)) Name = name;
             if (description != null && !Description.NullToString().Equals(description)) Description = description;
-            if (Rate != rate) Rate = rate;
             if (imagePath != null && !ImagePath.NullToString().Equals(imagePath)) ImagePath = imagePath;
             if (tags != null && !ImagePath.NullToString().Equals(tags)) Tags = tags;
             return this;

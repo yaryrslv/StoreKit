@@ -10,7 +10,6 @@ namespace StoreKit.Shared.DTOs.Catalog
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal Rate { get; set; }
         public string ImagePath { get; set; }
         [Column(TypeName = "jsonb")]
         public Tag Tags { get; set; }

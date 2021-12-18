@@ -84,7 +84,6 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    Rate = table.Column<decimal>(type: "numeric", nullable: false),
                     TenantKey = table.Column<string>(type: "text", nullable: true),
                     ImagePath = table.Column<string>(type: "text", nullable: true),
                     Tags = table.Column<List<Tag>>(type: "jsonb", nullable: true),
