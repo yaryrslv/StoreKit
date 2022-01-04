@@ -2,7 +2,7 @@
 
 namespace StoreKit.Shared.DTOs.Catalog
 {
-    public class CommentDto : IDto
+    public class CommentDetailsDto : IDto
     {
         public Guid Id { get; set; }
         public string CommentatorName { get; set; }

@@ -14,7 +14,7 @@ using StoreKit.Infrastructure.Persistence;
 namespace Migrators.PostgreSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211218200848_InitialCommit")]
+    [Migration("20220104212050_InitialCommit")]
     partial class InitialCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,7 +107,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     b.ToTable("UserTokens", "Identity");
                 });
 
-            modelBuilder.Entity("StoreKit.Domain.Entities.Catalog.Comments", b =>
+            modelBuilder.Entity("StoreKit.Domain.Entities.Catalog.Comment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

@@ -7,6 +7,7 @@ namespace StoreKit.Application.Abstractions.Services.Catalog
 {
     public interface INewsService : ITransientService
     {
+        Task<Result<NewsDetailsDto>> GetNewsDetailsAsync(Guid id);
         Task<PaginatedResult<NewsDto>> SearchAsync(NewsListFilter filter);
         Task<Result<Guid>> CreateNewsAsync(CreateNewsRequest request);
         Task<Result<Guid>> UpdateNewsAsync(UpdateNewsRequest request, Guid id);

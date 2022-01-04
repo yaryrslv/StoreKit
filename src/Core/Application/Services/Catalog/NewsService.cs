@@ -7,6 +7,7 @@ using StoreKit.Shared.DTOs.Catalog;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Threading.Tasks;
+using StoreKit.Application.Specifications;
 
 namespace StoreKit.Application.Services.Catalog
 {
@@ -19,6 +20,12 @@ namespace StoreKit.Application.Services.Catalog
         {
             _repository = repository;
             _localizer = localizer;
+        }
+        public async Task<Result<NewsDetailsDto>> GetNewsDetailsAsync(Guid id)
+        {
+            var spec = new BaseSpecification<News>();
+            var news = await _repository.GetByIdAsync<News, NewsDetailsDto>(id, spec);
+            return await Result<NewsDetailsDto>.SuccessAsync(news);
         }
 
         public async Task<Result<Guid>> CreateNewsAsync(CreateNewsRequest request)

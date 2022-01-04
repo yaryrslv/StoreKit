@@ -105,7 +105,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     b.ToTable("UserTokens", "Identity");
                 });
 
-            modelBuilder.Entity("StoreKit.Domain.Entities.Catalog.Comments", b =>
+            modelBuilder.Entity("StoreKit.Domain.Entities.Catalog.Comment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

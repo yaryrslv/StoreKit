@@ -47,6 +47,16 @@ namespace StoreKit.Bootstrapper.Controllers.v1
             return Ok();
         }
 
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Result<ProductDetailsDto>))]
+        public async Task<IActionResult> GetAsync(Guid id, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
+        {
+            var news = await _service.GetNewsDetailsAsync(id);
+            return Ok(news);
+        }
+
         [HttpPost("search")]
         [AllowAnonymous]
         [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]

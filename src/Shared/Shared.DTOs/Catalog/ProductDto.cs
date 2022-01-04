@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using StoreKit.Domain.Entities.Catalog;
 
 namespace StoreKit.Shared.DTOs.Catalog
@@ -11,6 +12,7 @@ namespace StoreKit.Shared.DTOs.Catalog
         public string Description { get; set; }
         public decimal Rate { get; set; }
         public string ImagePath { get; set; }
+        [Column(TypeName = "jsonb")]
         public List<Tag> Tags { get; set; }
     }
 }

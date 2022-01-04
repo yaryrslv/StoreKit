@@ -7,7 +7,8 @@ namespace StoreKit.Application.Abstractions.Services.Catalog
 {
     public interface ICommentsService : ITransientService
     {
-        Task<PaginatedResult<CommentsDto>> SearchAsync(CommentsListFilter filter);
+        Task<Result<CommentDetailsDto>> GetCommentDetailsAsync(Guid id);
+        Task<PaginatedResult<CommentDto>> SearchAsync(CommentsListFilter filter);
         Task<Result<Guid>> CreateCommentsAsync(CreateCommentsRequest request);
         Task<Result<Guid>> UpdateCommentsAsync(UpdateCommentsRequest request, Guid id);
         Task<Result<Guid>> DeleteCommentsAsync(Guid id);

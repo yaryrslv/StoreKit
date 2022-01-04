@@ -26,6 +26,16 @@ namespace StoreKit.Bootstrapper.Controllers.v1
             _service = service;
         }
 
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Result<CommentDetailsDto>))]
+        public async Task<IActionResult> GetAsync(Guid id, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
+        {
+            var comment = await _service.GetCommentDetailsAsync(id);
+            return Ok(comment);
+        }
+
         [HttpPost("generate")]
         [AllowAnonymous]
         [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
@@ -49,7 +59,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [AllowAnonymous]
         [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
         [SwaggerOperation(Summary = "Search Comments using available Filters.")]
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PaginatedResult<CommentsDto>))]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PaginatedResult<CommentDto>))]
         public async Task<IActionResult> SearchAsync(CommentsListFilter filter, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
         {
             var comments = await _service.SearchAsync(filter);
