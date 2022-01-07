@@ -15,6 +15,7 @@ using StoreKit.Application.Wrapper;
 using StoreKit.Domain.Constants;
 using StoreKit.Infrastructure.Identity.Permissions;
 using StoreKit.Shared.DTOs.Catalog;
+using StoreKit.Shared.DTOs.Catalog.News;
 
 namespace StoreKit.Bootstrapper.Controllers.v1
 {

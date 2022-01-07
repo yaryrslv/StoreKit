@@ -9,6 +9,7 @@ using StoreKit.Application.Wrapper;
 using StoreKit.Domain.Entities.Catalog;
 using StoreKit.Domain.Enums;
 using StoreKit.Shared.DTOs.Catalog;
+using StoreKit.Shared.DTOs.Catalog.Comment;
 
 namespace StoreKit.Application.Services.Catalog
 {
@@ -29,13 +30,13 @@ namespace StoreKit.Application.Services.Catalog
             var comment = await _repository.GetByIdAsync<Comment, CommentDetailsDto>(id, spec);
             return await Result<CommentDetailsDto>.SuccessAsync(comment);
         }
-        public async Task<PaginatedResult<CommentDto>> SearchAsync(CommentsListFilter filter)
+        public async Task<PaginatedResult<CommentDto>> SearchAsync(CommentListFilter filter)
         {
             var newsCollection = await _repository.GetSearchResultsAsync<Comment, CommentDto>(filter.PageNumber, filter.PageSize, filter.OrderBy, filter.Keyword);
             return newsCollection;
         }
 
-        public async Task<Result<Guid>> CreateCommentsAsync(CreateCommentsRequest request)
+        public async Task<Result<Guid>> CreateCommentsAsync(CreateCommentRequest request)
         {
             var comments = new Comment(request.CommentatorName, request.Title, request.Description);
             var commentsId = await _repository.CreateAsync<Comment>(comments);
@@ -43,7 +44,7 @@ namespace StoreKit.Application.Services.Catalog
             return await Result<Guid>.SuccessAsync(commentsId);
         }
 
-        public async Task<Result<Guid>> UpdateCommentsAsync(UpdateCommentsRequest request, Guid id)
+        public async Task<Result<Guid>> UpdateCommentsAsync(UpdateCommentRequest request, Guid id)
         {
             var comment = await _repository.GetByIdAsync<Comment>(id, null);
             if (comment == null) throw new EntityNotFoundException(string.Format(_localizer["comment.notfound"], id));

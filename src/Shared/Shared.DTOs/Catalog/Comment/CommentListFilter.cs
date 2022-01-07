@@ -2,7 +2,7 @@
 
 namespace StoreKit.Shared.DTOs.Catalog
 {
-    public class CommentsListFilter : PaginationFilter
+    public class CommentListFilter : PaginationFilter
     {
 
     }

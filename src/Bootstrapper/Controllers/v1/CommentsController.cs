@@ -11,6 +11,7 @@ using StoreKit.Domain.Constants;
 using StoreKit.Infrastructure.Identity.Permissions;
 using StoreKit.Infrastructure.SwaggerFilters;
 using StoreKit.Shared.DTOs.Catalog;
+using StoreKit.Shared.DTOs.Catalog.Comment;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace StoreKit.Bootstrapper.Controllers.v1
@@ -42,7 +43,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [SwaggerOperation(Summary = "Search Comments using available Filters.")]
         public async Task<IActionResult> GenerateAsync(int generationCount)
         {
-            var testCommentsGenerator = new Faker<CreateCommentsRequest>()
+            var testCommentsGenerator = new Faker<CreateCommentRequest>()
                 .RuleFor(u => u.CommentatorName, (f, u) => f.Person.UserName)
                 .RuleFor(u => u.Title, (f, u) => f.Lorem.Sentence())
                 .RuleFor(u => u.Description, (f, u) => f.Lorem.Paragraph());
@@ -60,7 +61,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
         [SwaggerOperation(Summary = "Search Comments using available Filters.")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PaginatedResult<CommentDto>))]
-        public async Task<IActionResult> SearchAsync(CommentsListFilter filter, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
+        public async Task<IActionResult> SearchAsync(CommentListFilter filter, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
         {
             var comments = await _service.SearchAsync(filter);
             return Ok(comments);
@@ -69,7 +70,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [HttpPost]
         [MustHavePermission(PermissionConstants.Comments.Create)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Result<Guid>))]
-        public async Task<IActionResult> CreateAsync(CreateCommentsRequest request)
+        public async Task<IActionResult> CreateAsync(CreateCommentRequest request)
         {
             return Ok(await _service.CreateCommentsAsync(request));
         }
@@ -77,7 +78,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [HttpPut("{id}")]
         [MustHavePermission(PermissionConstants.Comments.Edit)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Result<Guid>))]
-        public async Task<IActionResult> UpdateAsync(UpdateCommentsRequest request, Guid id)
+        public async Task<IActionResult> UpdateAsync(UpdateCommentRequest request, Guid id)
         {
             return Ok(await _service.UpdateCommentsAsync(request, id));
         }

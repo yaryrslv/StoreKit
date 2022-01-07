@@ -1,6 +1,6 @@
-﻿namespace StoreKit.Shared.DTOs.Catalog
+﻿namespace StoreKit.Shared.DTOs.Catalog.Comment
 {
-    public class UpdateCommentsRequest : IMustBeValid
+    public class CreateCommentRequest : IMustBeValid
     {
         public string CommentatorName { get; set; }
         public string Title { get; set; }

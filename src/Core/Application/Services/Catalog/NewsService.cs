@@ -8,6 +8,7 @@ using Microsoft.Extensions.Localization;
 using System;
 using System.Threading.Tasks;
 using StoreKit.Application.Specifications;
+using StoreKit.Shared.DTOs.Catalog.News;
 
 namespace StoreKit.Application.Services.Catalog
 {
@@ -55,8 +56,8 @@ namespace StoreKit.Application.Services.Catalog
         {
             var newsItem = await _repository.GetByIdAsync<News>(id);
             if (newsItem == null) throw new EntityNotFoundException(string.Format(_localizer["news.notfound"], id));
-            var updatedBrand = newsItem.Update(request.Title, request.Description);
-            await _repository.UpdateAsync<News>(updatedBrand);
+            var updatedNewsItem = newsItem.Update(request.Title, request.Description);
+            await _repository.UpdateAsync<News>(updatedNewsItem);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(id);
         }

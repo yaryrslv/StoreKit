@@ -86,5 +86,16 @@ namespace StoreKit.Domain.Constants
             public const string Delete = "Permissions.TagTypes.Delete";
             public const string Search = "Permissions.TagTypes.Search";
         }
+
+        [DisplayName("Pages")]
+        [Description("Pages Permissions")]
+        public static class Pages
+        {
+            public const string View = "Permissions.Pages.View";
+            public const string Create = "Permissions.Pages.Create";
+            public const string Edit = "Permissions.Pages.Edit";
+            public const string Delete = "Permissions.Pages.Delete";
+            public const string Search = "Permissions.Pages.Search";
+        }
     }
 }

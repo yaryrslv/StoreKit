@@ -1,4 +1,4 @@
-﻿namespace StoreKit.Shared.DTOs.Catalog
+﻿namespace StoreKit.Shared.DTOs.Catalog.News
 {
     public class UpdateNewsRequest : IMustBeValid
     {

@@ -29,6 +29,7 @@ namespace StoreKit.Infrastructure.Persistence
         public DbSet<News> News { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Page> Pages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

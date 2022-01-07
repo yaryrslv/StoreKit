@@ -13,7 +13,9 @@ namespace StoreKit.Domain.Constants
             PermissionConstants.News.Search,
             PermissionConstants.News.View,
             PermissionConstants.Comments.Search,
-            PermissionConstants.Comments.View
+            PermissionConstants.Comments.View,
+            PermissionConstants.Pages.Search,
+            PermissionConstants.Pages.View
         };
     }
 }
