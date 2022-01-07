@@ -53,9 +53,9 @@ namespace StoreKit.Application.Services.Catalog
 
         public async Task<Result<Guid>> UpdateNewsAsync(UpdateNewsRequest request, Guid id)
         {
-            var brand = await _repository.GetByIdAsync<News>(id);
-            if (brand == null) throw new EntityNotFoundException(string.Format(_localizer["news.notfound"], id));
-            var updatedBrand = brand.Update(request.Title, request.Description);
+            var newsItem = await _repository.GetByIdAsync<News>(id);
+            if (newsItem == null) throw new EntityNotFoundException(string.Format(_localizer["news.notfound"], id));
+            var updatedBrand = newsItem.Update(request.Title, request.Description);
             await _repository.UpdateAsync<News>(updatedBrand);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(id);

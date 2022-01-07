@@ -8,10 +8,12 @@ namespace StoreKit.Domain.Constants
         {
             PermissionConstants.Products.Search,
             PermissionConstants.Products.View,
-            PermissionConstants.Brands.Search,
-            PermissionConstants.Brands.View,
+            PermissionConstants.Categories.Search,
+            PermissionConstants.Categories.View,
             PermissionConstants.News.Search,
-            PermissionConstants.News.View
+            PermissionConstants.News.View,
+            PermissionConstants.Comments.Search,
+            PermissionConstants.Comments.View
         };
     }
 }

@@ -12,12 +12,12 @@ using StoreKit.Shared.DTOs.Catalog;
 
 namespace StoreKit.Application.Services.Catalog
 {
-    public class CommentsService : ICommentsService
+    public class CommentService : ICommentService
     {
-        private readonly IStringLocalizer<CommentsService> _localizer;
+        private readonly IStringLocalizer<CommentService> _localizer;
         private readonly IRepositoryAsync _repository;
 
-        public CommentsService(IRepositoryAsync repository, IStringLocalizer<CommentsService> localizer)
+        public CommentService(IRepositoryAsync repository, IStringLocalizer<CommentService> localizer)
         {
             _repository = repository;
             _localizer = localizer;

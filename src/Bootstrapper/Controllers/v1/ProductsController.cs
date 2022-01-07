@@ -11,6 +11,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Bogus;
 using Microsoft.AspNetCore.Authorization;
+using StoreKit.Application.Abstractions.Repositories;
 using StoreKit.Application.Wrapper;
 using StoreKit.Domain.Entities.Catalog;
 using StoreKit.Infrastructure.SwaggerFilters;
@@ -23,10 +24,12 @@ namespace StoreKit.Bootstrapper.Controllers.v1
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _service;
+        private readonly IRepositoryAsync _repositoryAsync;
 
-        public ProductsController(IProductService service)
+        public ProductsController(IProductService service, IRepositoryAsync repositoryAsync)
         {
             _service = service;
+            _repositoryAsync = repositoryAsync;
         }
 
         [HttpPost("generate")]
@@ -34,10 +37,16 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
         public async Task<IActionResult> GenerateAsync(int generationCount)
         {
+            var categories = await _repositoryAsync.GetSearchResultsAsync<Category, CategoryDetailsDto>(0, 888);
+            if (categories.TotalCount <= 0)
+            {
+                return NotFound("Categories not found");
+            }
+
             var testProductsGnerator = new Faker<CreateProductRequest>()
                 .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
                 .RuleFor(u => u.Description, (f, u) => f.Commerce.ProductDescription())
-                .RuleFor(u => u.Rate, (f, u) => 1);
+                .RuleFor(u => u.CategoryId, (f, u) => categories.Data[new Random().Next(categories.Data.Count - 1)].Id);
             var testProductsList = testProductsGnerator.Generate(generationCount);
             foreach (var testProductItem in testProductsList)
             {

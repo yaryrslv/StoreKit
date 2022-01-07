@@ -3,7 +3,6 @@ using StoreKit.Application.Specifications;
 using StoreKit.Application.Wrapper;
 using StoreKit.Domain.Contracts;
 using StoreKit.Shared.DTOs;
-using StoreKit.Shared.DTOs.Filters;
 using System;
 using System.Collections.Generic;
 using System.Data;

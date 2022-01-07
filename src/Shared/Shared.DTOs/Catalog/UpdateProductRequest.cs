@@ -11,7 +11,7 @@ namespace StoreKit.Shared.DTOs.Catalog
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal Rate { get; set; }
+        public Guid CategoryId { get; set; }
         public FileUploadRequest Image { get; set; }
         [Column(TypeName = "jsonb")]
         public List<Tag> Tags { get; set; }

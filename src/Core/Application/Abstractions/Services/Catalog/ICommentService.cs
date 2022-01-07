@@ -5,7 +5,7 @@ using StoreKit.Shared.DTOs.Catalog;
 
 namespace StoreKit.Application.Abstractions.Services.Catalog
 {
-    public interface ICommentsService : ITransientService
+    public interface ICommentService : ITransientService
     {
         Task<Result<CommentDetailsDto>> GetCommentDetailsAsync(Guid id);
         Task<PaginatedResult<CommentDto>> SearchAsync(CommentsListFilter filter);

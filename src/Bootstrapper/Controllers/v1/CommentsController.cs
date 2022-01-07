@@ -19,9 +19,9 @@ namespace StoreKit.Bootstrapper.Controllers.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     public class CommentsController : ControllerBase
     {
-        private readonly ICommentsService _service;
+        private readonly ICommentService _service;
 
-        public CommentsController(ICommentsService service)
+        public CommentsController(ICommentService service)
         {
             _service = service;
         }

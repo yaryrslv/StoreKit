@@ -33,15 +33,15 @@ namespace StoreKit.Domain.Constants
             public const string Search = "Permissions.Products.Search";
         }
 
-        [DisplayName("Brands")]
-        [Description("Brands Permissions")]
-        public static class Brands
+        [DisplayName("Categories")]
+        [Description("Category Permissions")]
+        public static class Categories
         {
-            public const string View = "Permissions.Brands.View";
-            public const string Create = "Permissions.Brands.Create";
-            public const string Edit = "Permissions.Brands.Edit";
-            public const string Delete = "Permissions.Brands.Delete";
-            public const string Search = "Permissions.Brands.Search";
+            public const string View = "Permissions.Categories.View";
+            public const string Create = "Permissions.Categories.Create";
+            public const string Edit = "Permissions.Categories.Edit";
+            public const string Delete = "Permissions.Categories.Delete";
+            public const string Search = "Permissions.Categories.Search";
         }
 
         [DisplayName("News")]

@@ -10,7 +10,6 @@ using StoreKit.Shared.DTOs.Catalog;
 using Mapster;
 using Microsoft.Extensions.Localization;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,8 +32,12 @@ namespace StoreKit.Application.Services.Catalog
         {
             var productExists = await _repository.ExistsAsync<Product>(a => a.Name == request.Name);
             if (productExists) throw new EntityAlreadyExistsException(string.Format(_localizer["product.alreadyexists"], request.Name));
+
+            var category = await _repository.GetByIdAsync<Category>(request.CategoryId, null);
+            if (category == null) throw new EntityNotFoundException(string.Format(_localizer["category.notfound"], request.CategoryId));
+
             string productImagePath = await _file.UploadAsync<Product>(request.Image, FileType.Image);
-            var product = new Product(request.Name, request.Description, productImagePath, request.Tags);
+            var product = new Product(request.Name, request.Description, productImagePath, category.Id, request.Tags);
             var productId = await _repository.CreateAsync<Product>(product);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(productId);
@@ -44,9 +47,13 @@ namespace StoreKit.Application.Services.Catalog
         {
             var product = await _repository.GetByIdAsync<Product>(id, null);
             if (product == null) throw new EntityNotFoundException(string.Format(_localizer["product.notfound"], id));
+
+            var category = await _repository.GetByIdAsync<Product>(request.CategoryId, null);
+            if (category == null) throw new EntityNotFoundException(string.Format(_localizer["category.notfound"], request.CategoryId));
+
             string productImagePath = string.Empty;
             if (request.Image != null) productImagePath = await _file.UploadAsync<Product>(request.Image, FileType.Image);
-            var updatedProduct = product.Update(request.Name, request.Description, request.Rate, productImagePath, request.Tags);
+            var updatedProduct = product.Update(request.Name, request.Description, productImagePath, category.Id, request.Tags);
             await _repository.UpdateAsync<Product>(updatedProduct);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(id);
@@ -77,6 +84,11 @@ namespace StoreKit.Application.Services.Catalog
         public async Task<PaginatedResult<ProductDto>> SearchAsync(ProductListFilter filter)
         {
             var products = await _repository.GetSearchResultsAsync<Product, ProductDto>(filter.PageNumber, filter.PageSize, filter.OrderBy, filter.Keyword);
+            if (filter.CategoryId != null)
+            {
+                var findProducts = products.Data.Where(i => i.CategoryId == filter.CategoryId).ToList();
+                products = new PaginatedResult<ProductDto>(products.Succeeded, findProducts, products.Messages, products.TotalCount, products.CurrentPage, products.PageSize);
+            }
             if (filter.Tags != null && filter.Tags.Count() > 0)
             {
                 var findProducts = products.Data.Where(i =>

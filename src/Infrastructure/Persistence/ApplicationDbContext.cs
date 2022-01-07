@@ -28,8 +28,14 @@ namespace StoreKit.Infrastructure.Persistence
         public DbSet<Product> Products { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Category> Categories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Category>()
+                .HasMany(p => p.Product)
+                .WithOne(p => p.Category)
+                .IsRequired();
             base.OnModelCreating(modelBuilder);
         }
 
