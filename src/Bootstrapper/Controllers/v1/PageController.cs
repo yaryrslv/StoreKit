@@ -10,6 +10,7 @@ using StoreKit.Domain.Constants;
 using StoreKit.Infrastructure.Identity.Permissions;
 using StoreKit.Infrastructure.SwaggerFilters;
 using StoreKit.Shared.DTOs.Catalog;
+using StoreKit.Shared.DTOs.Catalog.Page;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace StoreKit.Bootstrapper.Controllers.v1

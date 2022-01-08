@@ -2,6 +2,7 @@ using StoreKit.Application.Wrapper;
 using StoreKit.Shared.DTOs.Catalog;
 using System;
 using System.Threading.Tasks;
+using StoreKit.Shared.DTOs.Catalog.Product;
 
 namespace StoreKit.Application.Abstractions.Services.Catalog
 {

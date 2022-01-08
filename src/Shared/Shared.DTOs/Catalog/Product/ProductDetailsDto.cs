@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using StoreKit.Domain.Entities.Catalog;
 
-namespace StoreKit.Shared.DTOs.Catalog
+namespace StoreKit.Shared.DTOs.Catalog.Product
 {
     public class ProductDetailsDto : IDto
     {
@@ -13,6 +13,6 @@ namespace StoreKit.Shared.DTOs.Catalog
         public string ImagePath { get; set; }
         public Guid CategoryId { get; set; }
         [Column(TypeName = "jsonb")]
-        public Tag Tags { get; set; }
+        public List<Tag> Tags { get; set; }
     }
 }

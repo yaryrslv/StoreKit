@@ -15,6 +15,7 @@ using StoreKit.Application.Abstractions.Repositories;
 using StoreKit.Application.Wrapper;
 using StoreKit.Domain.Entities.Catalog;
 using StoreKit.Infrastructure.SwaggerFilters;
+using StoreKit.Shared.DTOs.Catalog.Product;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace StoreKit.Bootstrapper.Controllers.v1

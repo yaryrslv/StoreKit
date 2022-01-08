@@ -10,8 +10,10 @@ using StoreKit.Shared.DTOs.Catalog;
 using Mapster;
 using Microsoft.Extensions.Localization;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using StoreKit.Shared.DTOs.Catalog.Product;
 
 namespace StoreKit.Application.Services.Catalog
 {
@@ -69,7 +71,7 @@ namespace StoreKit.Application.Services.Catalog
         public async Task<Result<ProductDetailsDto>> GetProductDetailsAsync(Guid id)
         {
             var spec = new BaseSpecification<Product>();
-            spec.Includes.Add(a => a.Tags);
+            spec.Includes.Add(a => a.Tags as List<Tag>);
             var product = await _repository.GetByIdAsync<Product, ProductDetailsDto>(id, spec);
             return await Result<ProductDetailsDto>.SuccessAsync(product);
         }

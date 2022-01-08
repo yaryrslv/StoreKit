@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using StoreKit.Application.Abstractions.Services.Identity;
 using StoreKit.Infrastructure.SwaggerFilters;
-using StoreKit.Shared.DTOs.Identity.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
-using Bogus;
 using StoreKit.Application.Abstractions.Services.Catalog;
 using StoreKit.Application.Wrapper;
 using StoreKit.Domain.Constants;
 using StoreKit.Infrastructure.Identity.Permissions;
+using StoreKit.Infrastructure.Services;
 using StoreKit.Shared.DTOs.Catalog;
 using StoreKit.Shared.DTOs.Catalog.News;
+using StoreKit.Shared.DTOs.Catalog.Product;
 
 namespace StoreKit.Bootstrapper.Controllers.v1
 {
@@ -24,10 +22,12 @@ namespace StoreKit.Bootstrapper.Controllers.v1
     public class NewsController : ControllerBase
     {
         private readonly INewsService _service;
+        private readonly TestDataProvider _dataProvider;
 
-        public NewsController(INewsService service)
+        public NewsController(INewsService service, TestDataProvider dataProvider)
         {
             _service = service;
+            _dataProvider = dataProvider;
         }
 
         [HttpPost("generate")]
@@ -36,15 +36,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [SwaggerOperation(Summary = "Search News using available Filters.")]
         public async Task<IActionResult> GenerateAsync(int generationCount)
         {
-            var testNewsGenerator = new Faker<CreateNewsRequest>()
-                .RuleFor(u => u.Title, (f, u) => f.Lorem.Sentence())
-                .RuleFor(u => u.Description, (f, u) => f.Lorem.Paragraph());
-            var testNewsList = testNewsGenerator.Generate(generationCount);
-            foreach (var testNewsItem in testNewsList)
-            {
-                await _service.CreateNewsAsync(testNewsItem);
-            }
-
+            await _dataProvider.Init();
             return Ok();
         }
 

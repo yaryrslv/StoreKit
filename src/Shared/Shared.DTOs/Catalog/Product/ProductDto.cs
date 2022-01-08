@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using StoreKit.Domain.Entities.Catalog;
 
-namespace StoreKit.Shared.DTOs.Catalog
+namespace StoreKit.Shared.DTOs.Catalog.Product
 {
     public class ProductDto : IDto
     {
