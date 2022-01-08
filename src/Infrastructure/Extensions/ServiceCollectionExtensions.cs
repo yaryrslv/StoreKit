@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
+using StoreKit.Infrastructure.Services;
 
 namespace StoreKit.Infrastructure.Extensions
 {
@@ -56,6 +57,7 @@ namespace StoreKit.Infrastructure.Extensions
                config.ReportApiVersions = true;
            });
             services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
+            services.AddSingleton<TestDataProvider>();
             return services;
         }
 
