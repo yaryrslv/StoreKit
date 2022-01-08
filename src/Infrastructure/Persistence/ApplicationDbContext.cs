@@ -30,6 +30,7 @@ namespace StoreKit.Infrastructure.Persistence
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Page> Pages { get; set; }
+        public DbSet<StaticPage> StaticPages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

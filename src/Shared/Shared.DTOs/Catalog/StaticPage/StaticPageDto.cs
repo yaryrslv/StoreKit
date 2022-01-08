@@ -2,14 +2,9 @@
 
 namespace StoreKit.Shared.DTOs.Catalog.StaticPage
 {
-    public class StaticPageDto
+    public class StaticPageDetailsDto : IDto
     {
         public Guid Id { get; set; }
-        public string Body { get; set; }
-    }
-
-    public class CreateStaticPageDto
-    {
         public string Body { get; set; }
     }
 }

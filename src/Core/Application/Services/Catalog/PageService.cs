@@ -8,6 +8,7 @@ using StoreKit.Application.Specifications;
 using StoreKit.Application.Wrapper;
 using StoreKit.Domain.Entities.Catalog;
 using StoreKit.Shared.DTOs.Catalog;
+using StoreKit.Shared.DTOs.Catalog.Page;
 
 namespace StoreKit.Application.Services.Catalog
 {
@@ -39,10 +40,10 @@ namespace StoreKit.Application.Services.Catalog
         public async Task<Result<Guid>> CreatePageAsync(CreatePageRequest request)
         {
             var pageExists =
-                await _repository.ExistsAsync<Page>(a => a.Name == request.Name && a.Content == request.Content);
+                await _repository.ExistsAsync<Page>(a => a.Name == request.Name);
             if (pageExists)
                 throw new EntityAlreadyExistsException(string.Format(_localizer["page.alreadyexists"], request.Name));
-            var page = new Page(request.Name, request.PageType, request.Content, request.Url);
+            var page = new Page(request.Name, request.PageType, request.Url);
             var pageId = await _repository.CreateAsync<Page>(page);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(pageId);
@@ -52,7 +53,7 @@ namespace StoreKit.Application.Services.Catalog
         {
             var page = await _repository.GetByIdAsync<Page>(id);
             if (page == null) throw new EntityNotFoundException(string.Format(_localizer["page.notfound"], id));
-            var updatedPage = page.Update(request.Name, request.PageType, request.Content, request.Url);
+            var updatedPage = page.Update(request.Name, request.PageType, request.Url);
             await _repository.UpdateAsync<Page>(updatedPage);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(id);

@@ -15,7 +15,9 @@ namespace StoreKit.Domain.Constants
             PermissionConstants.Comments.Search,
             PermissionConstants.Comments.View,
             PermissionConstants.Pages.Search,
-            PermissionConstants.Pages.View
+            PermissionConstants.Pages.View,
+            PermissionConstants.StaticPages.Search,
+            PermissionConstants.StaticPages.View
         };
     }
 }
