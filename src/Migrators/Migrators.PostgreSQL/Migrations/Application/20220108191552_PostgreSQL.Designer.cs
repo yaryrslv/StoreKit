@@ -14,8 +14,8 @@ using StoreKit.Infrastructure.Persistence;
 namespace Migrators.PostgreSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220108163712_Init")]
-    partial class Init
+    [Migration("20220108191552_PostgreSQL")]
+    partial class PostgreSQL
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

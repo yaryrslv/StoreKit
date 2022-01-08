@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using StoreKit.Infrastructure.Services;
 
 namespace StoreKit.Bootstrapper
 {
@@ -33,8 +32,6 @@ namespace StoreKit.Bootstrapper
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.ApplicationServices.GetService<TestDataProvider>();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

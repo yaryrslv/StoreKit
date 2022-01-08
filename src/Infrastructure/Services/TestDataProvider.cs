@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +27,7 @@ namespace StoreKit.Infrastructure.Services
             Init().Wait();
         }
 
-        private Task Init()
+        public async Task Init()
         {
             using var scope = _serviceFactory.CreateScope();
 
@@ -38,12 +37,10 @@ namespace StoreKit.Infrastructure.Services
             _pageService = scope.ServiceProvider.GetService<IPageService>();
             _staticPageService = scope.ServiceProvider.GetService<IStaticPageService>();
 
-            var newsTask = CreateNews(100);
-            var categoriesTask = CreateCategories(10);
-            var commentsTask = CreateComments(100);
-            var pagesTask = CreatePages();
-
-            return Task.WhenAll(newsTask, categoriesTask, commentsTask, pagesTask);
+            await CreateNews(100);
+            await CreateCategories(10);
+            await CreateComments(100);
+            await CreatePages();
         }
 
         private async Task CreatePages()
@@ -53,8 +50,10 @@ namespace StoreKit.Infrastructure.Services
             createPageRequests.Add(CreateCommentsPage());
             createPageRequests.Add(CreateNewsPage());
 
-            var tasks = createPageRequests.Select(c => _pageService.CreatePageAsync(c)).ToArray();
-            await Task.WhenAll(tasks);
+            foreach (var request in createPageRequests)
+            {
+                await _pageService.CreatePageAsync(request);
+            }
         }
 
         private CreatePageRequest CreateNewsPage()
@@ -97,7 +96,7 @@ namespace StoreKit.Infrastructure.Services
             return createStaticPageAsync;
         }
 
-        private Task CreateComments(int count)
+        private async Task CreateComments(int count)
         {
             var commentsFaker = new Faker<CreateCommentRequest>()
                 .RuleFor(u => u.CommentatorName, (f, u) => f.Person.UserName)
@@ -105,29 +104,35 @@ namespace StoreKit.Infrastructure.Services
                 .RuleFor(u => u.Description, (f, u) => f.Lorem.Paragraph());
             var commentRequests = commentsFaker.Generate(count);
 
-            var tasks = commentRequests.Select(c => _commentService.CreateCommentsAsync(c)).ToArray();
-            return Task.WhenAll(tasks);
+            foreach (var request in commentRequests)
+            {
+                await _commentService.CreateCommentsAsync(request);
+            }
         }
 
-        private Task CreateCategories(int count)
+        private async Task CreateCategories(int count)
         {
             var categoryFaker = new Faker<CreateCategoryRequest>()
                 .RuleFor(u => u.Name, (f, u) => f.Lorem.Sentence());
 
             var categoryRequests = categoryFaker.Generate(count);
-            var tasks = categoryRequests.Select(c => _categoryService.CreateCategoryAsync(c)).ToArray();
-            return Task.WhenAll(tasks);
+            foreach (var request in categoryRequests)
+            {
+                await _categoryService.CreateCategoryAsync(request);
+            }
         }
 
-        private Task CreateNews(int count)
+        private async Task CreateNews(int count)
         {
             var newsFaker = new Faker<CreateNewsRequest>()
                 .RuleFor(u => u.Title, (f, u) => f.Lorem.Sentence())
                 .RuleFor(u => u.Description, (f, u) => f.Lorem.Paragraph());
 
             var newsRequests = newsFaker.Generate(count);
-            var tasks = newsRequests.Select(n => _newsService.CreateNewsAsync(n)).ToArray();
-            return Task.WhenAll(tasks);
+            foreach (var request in newsRequests)
+            {
+                await _newsService.CreateNewsAsync(request);
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ using StoreKit.Domain.Entities.Catalog;
 
 namespace Migrators.PostgreSQL.Migrations.Application
 {
-    public partial class Init : Migration
+    public partial class PostgreSQL : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
