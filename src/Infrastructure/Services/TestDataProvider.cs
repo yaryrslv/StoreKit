@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
+using Microsoft.Extensions.DependencyInjection;
 using StoreKit.Application.Abstractions.Services.Catalog;
 using StoreKit.Domain.Enums;
 using StoreKit.Shared.DTOs.Catalog;
@@ -13,29 +14,30 @@ namespace StoreKit.Infrastructure.Services
 {
     public class TestDataProvider
     {
-        private readonly INewsService _newsService;
-        private readonly ICategoryService _categoryService;
-        private readonly ICommentService _commentService;
-        private readonly IPageService _pageService;
-        private readonly IStaticPageService _staticPageService;
+        private readonly IServiceScopeFactory _serviceFactory;
+        private INewsService _newsService;
+        private ICategoryService _categoryService;
+        private ICommentService _commentService;
+        private IPageService _pageService;
+        private IStaticPageService _staticPageService;
         private readonly Faker _faker = new();
 
-        public TestDataProvider(
-            INewsService newsService,
-            ICategoryService categoryService,
-            ICommentService commentService,
-            IPageService pageService,
-            IStaticPageService staticPageService)
+        public TestDataProvider(IServiceScopeFactory serviceFactory)
         {
-            _newsService = newsService;
-            _categoryService = categoryService;
-            _commentService = commentService;
-            _pageService = pageService;
-            _staticPageService = staticPageService;
+            _serviceFactory = serviceFactory;
+            Init().Wait();
         }
 
-        public Task Init()
+        private Task Init()
         {
+            using var scope = _serviceFactory.CreateScope();
+
+            _newsService = scope.ServiceProvider.GetService<INewsService>();
+            _categoryService = scope.ServiceProvider.GetService<ICategoryService>();
+            _commentService = scope.ServiceProvider.GetService<ICommentService>();
+            _pageService = scope.ServiceProvider.GetService<IPageService>();
+            _staticPageService = scope.ServiceProvider.GetService<IStaticPageService>();
+
             var newsTask = CreateNews(100);
             var categoriesTask = CreateCategories(10);
             var commentsTask = CreateComments(100);

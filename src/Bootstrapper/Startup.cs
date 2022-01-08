@@ -29,12 +29,12 @@ namespace StoreKit.Bootstrapper
             services
                 .AddApplication()
                 .AddInfrastructure(_config);
-
-            InitService(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.ApplicationServices.GetService<TestDataProvider>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -45,14 +45,6 @@ namespace StoreKit.Bootstrapper
             }
 
             app.UseInfrastructure(_config);
-        }
-
-        private void InitService(IServiceCollection services)
-        {
-            var serviceProvider = services.BuildServiceProvider();
-            var dataProvider = serviceProvider.GetService<TestDataProvider>();
-
-            dataProvider.Init().Wait();
         }
     }
 }
