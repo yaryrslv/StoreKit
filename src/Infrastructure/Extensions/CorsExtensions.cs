@@ -16,7 +16,6 @@ namespace StoreKit.Infrastructure.Extensions
                     policy
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowCredentials()
                         .AllowAnyOrigin();
                 });
             });
