@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json;
+using System.IO;
 using StoreKit.Domain.Entities.Catalog;
-using StoreKit.Shared.DTOs.General.Requests;
 
-namespace StoreKit.Shared.DTOs.Catalog
+namespace StoreKit.Shared.DTOs.Catalog.Product
 {
     public class CreateProductRequest : IMustBeValid
     {
@@ -14,6 +13,5 @@ namespace StoreKit.Shared.DTOs.Catalog
         public Guid CategoryId { get; set; }
         [Column(TypeName = "jsonb")]
         public List<Tag> Tags { get; set; }
-        public FileUploadRequest Image { get; set; }
     }
 }

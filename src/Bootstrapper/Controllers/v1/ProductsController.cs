@@ -4,13 +4,15 @@ using StoreKit.Infrastructure.Identity.Permissions;
 using StoreKit.Shared.DTOs.Catalog;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Bogus;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using StoreKit.Application.Abstractions.Repositories;
 using StoreKit.Application.Wrapper;
 using StoreKit.Domain.Entities.Catalog;
@@ -55,7 +57,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
                     .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
                     .RuleFor(u => u.Value, (f, u) => f.Commerce.Price());
                 testProductItem.Tags = testTagsGenerator.Generate(8);
-                await _service.CreateProductAsync(testProductItem);
+                await _service.CreateProductAsync(testProductItem, null);
             }
 
             return Ok();
@@ -95,7 +97,14 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Result<Guid>))]
         public async Task<IActionResult> CreateAsync(CreateProductRequest request)
         {
-            return Ok(await _service.CreateProductAsync(request));
+            var files = HttpContext.Request.Form.Files;
+            if (files.Count <= 0)
+            {
+                return BadRequest("File not found");
+            }
+
+            var imageStream = files[0].OpenReadStream();
+            return Ok(await _service.CreateProductAsync(request, imageStream));
         }
 
         [HttpPut("{id}")]

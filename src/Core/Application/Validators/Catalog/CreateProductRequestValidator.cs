@@ -2,6 +2,7 @@ using System;
 using StoreKit.Application.Validators.General;
 using StoreKit.Shared.DTOs.Catalog;
 using FluentValidation;
+using StoreKit.Shared.DTOs.Catalog.Product;
 
 namespace StoreKit.Application.Validators.Catalog
 {
@@ -11,7 +12,6 @@ namespace StoreKit.Application.Validators.Catalog
         {
             RuleFor(p => p.Name).MaximumLength(75).NotEmpty();
             RuleFor(p => p.CategoryId).NotEqual(Guid.Empty);
-            RuleFor(p => p.Image).SetValidator(new FileUploadRequestValidator());
             RuleFor(p => p.Tags).NotEmpty().NotNull();
         }
     }

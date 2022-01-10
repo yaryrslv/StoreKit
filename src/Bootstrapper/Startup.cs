@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StoreKit.Application.Services.LocalStorage;
+using StoreKit.Infrastructure.Services.LocalStorage;
 
 namespace StoreKit.Bootstrapper
 {
@@ -42,6 +44,7 @@ namespace StoreKit.Bootstrapper
             }
 
             app.UseInfrastructure(_config);
+            app.UseMiddleware<ImageResizerMiddleware>();
         }
     }
 }

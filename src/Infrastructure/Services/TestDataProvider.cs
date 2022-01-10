@@ -19,7 +19,7 @@ namespace StoreKit.Infrastructure.Services
         private ICommentService _commentService;
         private IPageService _pageService;
         private IStaticPageService _staticPageService;
-        private readonly Faker _faker = new();
+        public readonly Faker _faker = new();
 
         public TestDataProvider(IServiceScopeFactory serviceFactory)
         {

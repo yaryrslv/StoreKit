@@ -6,13 +6,14 @@ using StoreKit.Application.Specifications;
 using StoreKit.Application.Wrapper;
 using StoreKit.Domain.Entities.Catalog;
 using StoreKit.Domain.Enums;
-using StoreKit.Shared.DTOs.Catalog;
 using Mapster;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using StoreKit.Application.Services.LocalStorage;
 using StoreKit.Shared.DTOs.Catalog.Product;
 
 namespace StoreKit.Application.Services.Catalog
@@ -20,17 +21,17 @@ namespace StoreKit.Application.Services.Catalog
     public class ProductsService : IProductService
     {
         private readonly IStringLocalizer<ProductsService> _localizer;
-        private readonly IFileStorageService _file;
+        private readonly IImageService _imageService;
         private readonly IRepositoryAsync _repository;
 
-        public ProductsService(IRepositoryAsync repository, IStringLocalizer<ProductsService> localizer, IFileStorageService file)
+        public ProductsService(IRepositoryAsync repository, IStringLocalizer<ProductsService> localizer, IImageService imageService)
         {
             _repository = repository;
             _localizer = localizer;
-            _file = file;
+            _imageService = imageService;
         }
 
-        public async Task<Result<Guid>> CreateProductAsync(CreateProductRequest request)
+        public async Task<Result<Guid>> CreateProductAsync(CreateProductRequest request, Stream imageStream)
         {
             var productExists = await _repository.ExistsAsync<Product>(a => a.Name == request.Name);
             if (productExists) throw new EntityAlreadyExistsException(string.Format(_localizer["product.alreadyexists"], request.Name));
@@ -38,7 +39,7 @@ namespace StoreKit.Application.Services.Catalog
             var category = await _repository.GetByIdAsync<Category>(request.CategoryId, null);
             if (category == null) throw new EntityNotFoundException(string.Format(_localizer["category.notfound"], request.CategoryId));
 
-            string productImagePath = await _file.UploadAsync<Product>(request.Image, FileType.Image);
+            string productImagePath = await _imageService.Save(imageStream, Guid.NewGuid().ToString());
             var product = new Product(request.Name, request.Description, productImagePath, category.Id, request.Tags);
             var productId = await _repository.CreateAsync<Product>(product);
             await _repository.SaveChangesAsync();
@@ -54,7 +55,11 @@ namespace StoreKit.Application.Services.Catalog
             if (category == null) throw new EntityNotFoundException(string.Format(_localizer["category.notfound"], request.CategoryId));
 
             string productImagePath = string.Empty;
-            if (request.Image != null) productImagePath = await _file.UploadAsync<Product>(request.Image, FileType.Image);
+            if (request.ImageStream != null)
+            {
+                productImagePath = await _imageService.Save(request.ImageStream, Guid.NewGuid().ToString());
+            }
+
             var updatedProduct = product.Update(request.Name, request.Description, productImagePath, category.Id, request.Tags);
             await _repository.UpdateAsync<Product>(updatedProduct);
             await _repository.SaveChangesAsync();
