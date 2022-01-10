@@ -4,6 +4,8 @@
     {
         StaticPage = 0,
         NewsPage = 1,
-        CommentsPage = 2
+        CommentsPage = 2,
+        MainScreen = 3,
+        GalleryScreen = 4,
     }
 }

@@ -61,7 +61,7 @@ namespace StoreKit.Infrastructure.Services
             return new CreatePageRequest
             {
                 Name = "News",
-                PageType = PageType.CommentsPage,
+                PageType = PageType.NewsPage,
                 Url = $"api/v1/News/"
             };
         }
