@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Bogus;
 using Microsoft.Extensions.DependencyInjection;
+using StoreKit.Application.Abstractions.Repositories;
 using StoreKit.Application.Abstractions.Services.Catalog;
+using StoreKit.Domain.Entities.Catalog;
 using StoreKit.Domain.Enums;
 using StoreKit.Shared.DTOs.Catalog;
 using StoreKit.Shared.DTOs.Catalog.Comment;
@@ -19,7 +22,9 @@ namespace StoreKit.Infrastructure.Services
         private ICommentService _commentService;
         private IPageService _pageService;
         private IStaticPageService _staticPageService;
-        public readonly Faker _faker = new();
+        private IProductService _productService;
+        private IRepositoryAsync _repository;
+        private readonly Faker _faker = new();
 
         public TestDataProvider(IServiceScopeFactory serviceFactory)
         {
@@ -37,10 +42,33 @@ namespace StoreKit.Infrastructure.Services
             _pageService = scope.ServiceProvider.GetService<IPageService>();
             _staticPageService = scope.ServiceProvider.GetService<IStaticPageService>();
 
+            _productService = scope.ServiceProvider.GetService<IProductService>();
+            _repository = scope.ServiceProvider.GetService<IRepositoryAsync>();
+
             await CreateNews(100);
             await CreateCategories(10);
             await CreateComments(100);
+            await CreateProducts(100);
             await CreatePages();
+        }
+
+        private async Task CreateProducts(int count)
+        {
+            var categories = await _repository.GetSearchResultsAsync<Category, CategoryDetailsDto>(0, 888);
+
+            var testProductsGnerator = new Faker<CreateProductRequest>()
+                .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
+                .RuleFor(u => u.Description, (f, u) => f.Commerce.ProductDescription())
+                .RuleFor(u => u.CategoryId, (f, u) => categories.Data[new Random().Next(categories.Data.Count - 1)].Id);
+            var testProductsList = testProductsGnerator.Generate(count);
+            foreach (var testProductItem in testProductsList)
+            {
+                var testTagsGenerator = new Faker<Tag>()
+                    .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
+                    .RuleFor(u => u.Value, (f, u) => f.Commerce.Price());
+                testProductItem.Tags = testTagsGenerator.Generate(8);
+                await _productService.CreateProductAsync(testProductItem);
+            }
         }
 
         private async Task CreatePages()
@@ -49,11 +77,22 @@ namespace StoreKit.Infrastructure.Services
             createPageRequests.AddRange(await CreateStaticPage(2));
             createPageRequests.Add(CreateCommentsPage());
             createPageRequests.Add(CreateNewsPage());
+            createPageRequests.Add(CreateCategoriesPage());
 
             foreach (var request in createPageRequests)
             {
                 await _pageService.CreatePageAsync(request);
             }
+        }
+
+        private CreatePageRequest CreateCategoriesPage()
+        {
+            return new CreatePageRequest
+            {
+                Name = "MainScreen",
+                PageType = PageType.MainScreen,
+                Url = $"api/v1/category/"
+            };
         }
 
         private CreatePageRequest CreateNewsPage()
