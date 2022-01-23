@@ -140,9 +140,6 @@ namespace StoreKit.Infrastructure.Identity.Services
             {
                 new(ClaimTypes.NameIdentifier, user.Id),
                 new(ClaimTypes.Email, user.Email),
-                new("fullName", $"{user.FirstName} {user.LastName}"),
-                new(ClaimTypes.Name, user.FirstName),
-                new(ClaimTypes.Surname, user.LastName),
                 new("ipAddress", ipAddress),
                 new("tenantKey", tenantKey)
             };

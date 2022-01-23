@@ -17,12 +17,14 @@ namespace StoreKit.Bootstrapper.Controllers.Identity
         private readonly ICurrentUser _user;
         private readonly IIdentityService _identityService;
         private readonly IUserService _userService;
+        private readonly ITokenService _tokenService;
 
-        public IdentityController(IIdentityService identityService, ICurrentUser user, IUserService userService)
+        public IdentityController(IIdentityService identityService, ICurrentUser user, IUserService userService, ITokenService tokenService)
         {
             _identityService = identityService;
             _user = user;
             _userService = userService;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
@@ -32,7 +34,9 @@ namespace StoreKit.Bootstrapper.Controllers.Identity
         {
             string baseUrl = $"{this.Request.Scheme}://{this.Request.Host.Value.ToString()}{this.Request.PathBase.Value.ToString()}";
             string origin = string.IsNullOrEmpty(Request.Headers["origin"].ToString()) ? baseUrl : Request.Headers["origin"].ToString();
-            return Ok(await _identityService.RegisterAsync(request, origin));
+            var identityResponse = await _identityService.RegisterAsync(request, origin);
+            var tokenResponse = await _tokenService.GetTokenAsync(new TokenRequest(request.Email, request.Password), GenerateIPAddress());
+            return Ok(tokenResponse);
         }
 
         [HttpGet("confirm-email")]
@@ -74,6 +78,18 @@ namespace StoreKit.Bootstrapper.Controllers.Identity
         public async Task<IActionResult> GetProfileDetailsAsync()
         {
             return Ok(await _userService.GetAsync(_user.GetUserId().ToString()));
+        }
+
+        private string GenerateIPAddress()
+        {
+            if (Request.Headers.ContainsKey("X-Forwarded-For"))
+            {
+                return Request.Headers["X-Forwarded-For"];
+            }
+            else
+            {
+                return HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString();
+            }
         }
     }
 }

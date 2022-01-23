@@ -35,7 +35,7 @@ namespace StoreKit.Application.Services.Catalog
             _staticFileSettings = staticFileSettings.Value;
         }
 
-        public async Task<Result<Guid>> CreateProductAsync(CreateProductRequest request, Stream imageStream)
+        public async Task<Result<Guid>> CreateProductAsync(CreateProductRequest request)
         {
             var productExists = await _repository.ExistsAsync<Product>(a => a.Name == request.Name);
             if (productExists) throw new EntityAlreadyExistsException(string.Format(_localizer["product.alreadyexists"], request.Name));

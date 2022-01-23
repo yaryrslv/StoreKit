@@ -57,7 +57,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
                     .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
                     .RuleFor(u => u.Value, (f, u) => f.Commerce.Price());
                 testProductItem.Tags = testTagsGenerator.Generate(8);
-                await _service.CreateProductAsync(testProductItem, null);
+                await _service.CreateProductAsync(testProductItem);
             }
 
             return Ok();
@@ -98,7 +98,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Result<Guid>))]
         public async Task<IActionResult> CreateAsync([FromBody]CreateProductRequest request)
         {
-            return Ok(await _service.CreateProductAsync(request, null));
+            return Ok(await _service.CreateProductAsync(request));
         }
 
         [HttpPut("{id}")]
