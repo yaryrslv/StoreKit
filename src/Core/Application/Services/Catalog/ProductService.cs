@@ -13,7 +13,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using StoreKit.Application.Services.LocalStorage;
+using StoreKit.Infrastructure.Services.LocalStorage;
 using StoreKit.Shared.DTOs.Catalog.Product;
 
 namespace StoreKit.Application.Services.Catalog
@@ -23,12 +25,14 @@ namespace StoreKit.Application.Services.Catalog
         private readonly IStringLocalizer<ProductsService> _localizer;
         private readonly IImageService _imageService;
         private readonly IRepositoryAsync _repository;
+        private readonly StaticFileSettings _staticFileSettings;
 
-        public ProductsService(IRepositoryAsync repository, IStringLocalizer<ProductsService> localizer, IImageService imageService)
+        public ProductsService(IRepositoryAsync repository, IStringLocalizer<ProductsService> localizer, IImageService imageService, IOptions<StaticFileSettings> staticFileSettings)
         {
             _repository = repository;
             _localizer = localizer;
             _imageService = imageService;
+            _staticFileSettings = staticFileSettings.Value;
         }
 
         public async Task<Result<Guid>> CreateProductAsync(CreateProductRequest request, Stream imageStream)
@@ -68,7 +72,9 @@ namespace StoreKit.Application.Services.Catalog
 
         public async Task<Result<Guid>> DeleteProductAsync(Guid id)
         {
+            var product = await _repository.GetByIdAsync<Product>(id);
             await _repository.RemoveByIdAsync<Product>(id);
+            _imageService.Delete(product.ImagePath, _staticFileSettings);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(id);
         }

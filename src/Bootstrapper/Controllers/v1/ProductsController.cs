@@ -93,18 +93,12 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         }
 
         [HttpPost]
-        [MustHavePermission(PermissionConstants.Products.Create)]
+        [AllowAnonymous]
+        [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Result<Guid>))]
-        public async Task<IActionResult> CreateAsync(CreateProductRequest request)
+        public async Task<IActionResult> CreateAsync([FromBody]CreateProductRequest request, [FromForm] IFormFile file)
         {
-            var files = HttpContext.Request.Form.Files;
-            if (files.Count <= 0)
-            {
-                return BadRequest("File not found");
-            }
-
-            var imageStream = files[0].OpenReadStream();
-            return Ok(await _service.CreateProductAsync(request, imageStream));
+            return Ok(await _service.CreateProductAsync(request, file.OpenReadStream()));
         }
 
         [HttpPut("{id}")]

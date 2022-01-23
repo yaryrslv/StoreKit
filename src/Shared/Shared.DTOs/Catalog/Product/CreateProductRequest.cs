@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
 using StoreKit.Domain.Entities.Catalog;
 
 namespace StoreKit.Shared.DTOs.Catalog.Product
 {
-    public class CreateProductRequest : IMustBeValid
+    public class CreateProductRequest
     {
         public string Name { get; set; }
         public string Description { get; set; }
