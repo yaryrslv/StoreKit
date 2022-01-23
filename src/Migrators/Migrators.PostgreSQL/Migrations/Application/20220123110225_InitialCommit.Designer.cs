@@ -14,8 +14,8 @@ using StoreKit.Infrastructure.Persistence;
 namespace Migrators.PostgreSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220108191552_PostgreSQL")]
-    partial class PostgreSQL
+    [Migration("20220123110225_InitialCommit")]
+    partial class InitialCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -300,6 +300,9 @@ namespace Migrators.PostgreSQL.Migrations.Application
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.Property<List<Tag>>("Tags")
                         .HasColumnType("jsonb");

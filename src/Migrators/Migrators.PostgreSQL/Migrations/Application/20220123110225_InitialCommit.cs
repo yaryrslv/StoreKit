@@ -195,6 +195,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     ImagePath = table.Column<string>(type: "text", nullable: true),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     Tags = table.Column<List<Tag>>(type: "jsonb", nullable: true),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: false),
