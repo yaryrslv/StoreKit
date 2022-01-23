@@ -49,7 +49,10 @@ namespace StoreKit.Application.Services.Catalog
         public async Task<PaginatedResult<NewsDto>> SearchAsync(NewsListFilter filter)
         {
             var newsCollection = await _repository.GetSearchResultsAsync<News, NewsDto>(filter.PageNumber, filter.PageSize, filter.OrderBy, filter.Keyword);
-            return newsCollection;
+            var reversedNews = newsCollection.Data;
+            reversedNews.Reverse();
+            var newNewsCollection = new PaginatedResult<NewsDto>(reversedNews);
+            return newNewsCollection;
         }
 
         public async Task<Result<Guid>> UpdateNewsAsync(UpdateNewsRequest request, Guid id)
