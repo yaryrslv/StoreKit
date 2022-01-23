@@ -10,6 +10,7 @@ using StoreKit.Domain.Enums;
 using StoreKit.Shared.DTOs.Catalog;
 using StoreKit.Shared.DTOs.Catalog.Comment;
 using StoreKit.Shared.DTOs.Catalog.Page;
+using StoreKit.Shared.DTOs.Catalog.Product;
 using StoreKit.Shared.DTOs.Catalog.StaticPage;
 
 namespace StoreKit.Infrastructure.Services
@@ -24,7 +25,7 @@ namespace StoreKit.Infrastructure.Services
         private IStaticPageService _staticPageService;
         private IProductService _productService;
         private IRepositoryAsync _repository;
-        private readonly Faker _faker = new();
+        public readonly Faker _faker = new();
 
         public TestDataProvider(IServiceScopeFactory serviceFactory)
         {
