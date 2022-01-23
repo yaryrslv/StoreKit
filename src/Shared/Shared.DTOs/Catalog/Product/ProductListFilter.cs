@@ -9,5 +9,6 @@ namespace StoreKit.Shared.DTOs.Catalog.Product
     {
         public Guid? CategoryId { get; set; }
         public List<Tag> Tags { get; set; }
+        public List<ProductPrice> Prices { get; set; }
     }
 }
