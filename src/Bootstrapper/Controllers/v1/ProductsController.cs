@@ -96,9 +96,9 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [AllowAnonymous]
         [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Result<Guid>))]
-        public async Task<IActionResult> CreateAsync([FromBody]CreateProductRequest request, [FromForm] IFormFile file)
+        public async Task<IActionResult> CreateAsync([FromBody]CreateProductRequest request)
         {
-            return Ok(await _service.CreateProductAsync(request, file.OpenReadStream()));
+            return Ok(await _service.CreateProductAsync(request, null));
         }
 
         [HttpPut("{id}")]

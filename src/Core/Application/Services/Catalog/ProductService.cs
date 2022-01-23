@@ -43,8 +43,8 @@ namespace StoreKit.Application.Services.Catalog
             var category = await _repository.GetByIdAsync<Category>(request.CategoryId, null);
             if (category == null) throw new EntityNotFoundException(string.Format(_localizer["category.notfound"], request.CategoryId));
 
-            string productImagePath = await _imageService.Save(imageStream, Guid.NewGuid().ToString());
-            var product = new Product(request.Name, request.Description, productImagePath, category.Id, request.Tags);
+            //string productImagePath = await _imageService.Save(imageStream, Guid.NewGuid().ToString());
+            var product = new Product(request.Name, request.Description, null, category.Id, request.Tags);
             var productId = await _repository.CreateAsync<Product>(product);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(productId);
