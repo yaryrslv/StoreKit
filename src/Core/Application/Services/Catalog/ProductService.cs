@@ -112,11 +112,30 @@ namespace StoreKit.Application.Services.Catalog
                     }
                     return false;
                 }).ToList();
-                if(findProducts.Count > 0)
-                    return new PaginatedResult<ProductDto>(products.Succeeded, findProducts, products.Messages, products.TotalCount, products.CurrentPage, products.PageSize);
+                if (findProducts.Count > 0)
+                {
+                    products.Data = findProducts;
+                }
+            }
+            if (filter.Prices != null && filter.Prices.Count() > 0)
+            {
+                var findProducts = products.Data.Where(i =>
+                {
+                    var intersectedPrices = i.Prices.Select(t => (t.Type+t.Price).GetHashCode())
+                        .Intersect(filter.Prices.Select(t => (t.Type+t.Price).GetHashCode())).ToList();
+                    if (intersectedPrices.Count > 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }).ToList();
+                if (findProducts.Count > 0)
+                {
+                    products.Data = findProducts;
+                }
             }
 
-            return products;
+            return new PaginatedResult<ProductDto>(products.Succeeded, products.Data, products.Messages, products.TotalCount, products.CurrentPage, products.PageSize);
         }
     }
 }
