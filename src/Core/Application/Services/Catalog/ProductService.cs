@@ -80,6 +80,7 @@ namespace StoreKit.Application.Services.Catalog
         {
             var spec = new BaseSpecification<Product>();
             spec.Includes.Add(a => a.Tags as List<Tag>);
+            spec.Includes.Add(a => a.Prices);
             var product = await _repository.GetByIdAsync<Product, ProductDetailsDto>(id, spec);
             return await Result<ProductDetailsDto>.SuccessAsync(product);
         }
