@@ -46,14 +46,14 @@ namespace StoreKit.Bootstrapper.Controllers.v1
                 return NotFound("Categories not found");
             }
 
-            var testProductsGnerator = new Faker<CreateProductRequest>("ru_RU")
+            var testProductsGnerator = new Faker<CreateProductRequest>("ru")
                 .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
                 .RuleFor(u => u.Description, (f, u) => f.Commerce.ProductDescription())
                 .RuleFor(u => u.CategoryId, (f, u) => categories.Data[new Random().Next(categories.Data.Count - 1)].Id);
             var testProductsList = testProductsGnerator.Generate(generationCount);
             foreach (var testProductItem in testProductsList)
             {
-                var testTagsGenerator = new Faker<Tag>("ru_RU")
+                var testTagsGenerator = new Faker<Tag>("ru")
                     .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
                     .RuleFor(u => u.Value, (f, u) => f.Commerce.Price());
                 testProductItem.Tags = testTagsGenerator.Generate(8);

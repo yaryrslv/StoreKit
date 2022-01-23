@@ -57,7 +57,7 @@ namespace StoreKit.Infrastructure.Services
         {
             var categories = await _repository.GetSearchResultsAsync<Category, CategoryDetailsDto>(0, 888);
 
-            var testProductsGnerator = new Faker<CreateProductRequest>("ru_RU")
+            var testProductsGnerator = new Faker<CreateProductRequest>("ru")
                 .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
                 .RuleFor(u => u.Description, (f, u) => f.Commerce.ProductDescription())
                 .RuleFor(u => u.CategoryId, (f, u) => categories.Data[new Random().Next(categories.Data.Count - 1)].Id)
@@ -65,7 +65,7 @@ namespace StoreKit.Infrastructure.Services
             var testProductsList = testProductsGnerator.Generate(count);
             foreach (var testProductItem in testProductsList)
             {
-                var testTagsGenerator = new Faker<Tag>("ru_RU")
+                var testTagsGenerator = new Faker<Tag>("ru")
                     .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
                     .RuleFor(u => u.Value, (f, u) => f.Commerce.Price());
                 testProductItem.Tags = testTagsGenerator.Generate(8);
@@ -119,7 +119,7 @@ namespace StoreKit.Infrastructure.Services
 
         private async Task<List<CreatePageRequest>> CreateStaticPage(int count)
         {
-            var createStaticPageAsync = new Faker<CreatePageRequest>("ru_RU")
+            var createStaticPageAsync = new Faker<CreatePageRequest>("ru")
                 .RuleFor(u => u.PageType, () => PageType.StaticPage)
                 .RuleFor(u => u.Name, (f) => $"Информация {f.Lorem.Sentence()}")
                 .RuleFor(u => u.Url, (f) => $"api/v1/StaticPage/")
@@ -139,7 +139,7 @@ namespace StoreKit.Infrastructure.Services
 
         private async Task CreateComments(int count)
         {
-            var commentsFaker = new Faker<CreateCommentRequest>("ru_RU")
+            var commentsFaker = new Faker<CreateCommentRequest>("ru")
                 .RuleFor(u => u.CommentatorName, (f, u) => f.Person.UserName)
                 .RuleFor(u => u.Title, (f, u) => f.Lorem.Sentence())
                 .RuleFor(u => u.Description, (f, u) => f.Lorem.Paragraph());
@@ -153,7 +153,7 @@ namespace StoreKit.Infrastructure.Services
 
         private async Task CreateCategories(int count)
         {
-            var categoryFaker = new Faker<CreateCategoryRequest>("ru_RU")
+            var categoryFaker = new Faker<CreateCategoryRequest>("ru")
                 .RuleFor(u => u.Name, (f, u) => f.Lorem.Sentence());
 
             var categoryRequests = categoryFaker.Generate(count);
@@ -165,7 +165,7 @@ namespace StoreKit.Infrastructure.Services
 
         private async Task CreateNews(int count)
         {
-            var newsFaker = new Faker<CreateNewsRequest>("ru_RU")
+            var newsFaker = new Faker<CreateNewsRequest>("ru")
                 .RuleFor(u => u.Title, (f, u) => f.Lorem.Sentence())
                 .RuleFor(u => u.Description, (f, u) => f.Lorem.Paragraph());
 
