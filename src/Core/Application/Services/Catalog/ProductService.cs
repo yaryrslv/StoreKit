@@ -1,16 +1,13 @@
 using StoreKit.Application.Abstractions.Repositories;
 using StoreKit.Application.Abstractions.Services.Catalog;
-using StoreKit.Application.Abstractions.Services.General;
 using StoreKit.Application.Exceptions;
 using StoreKit.Application.Specifications;
 using StoreKit.Application.Wrapper;
 using StoreKit.Domain.Entities.Catalog;
-using StoreKit.Domain.Enums;
 using Mapster;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -44,7 +41,7 @@ namespace StoreKit.Application.Services.Catalog
             if (category == null) throw new EntityNotFoundException(string.Format(_localizer["category.notfound"], request.CategoryId));
 
             //string productImagePath = await _imageService.Save(imageStream, Guid.NewGuid().ToString());
-            var product = new Product(request.Name, request.Description, null, category.Id, request.Tags, request.Price);
+            var product = new Product(request.Name, request.Description, null, category.Id, request.Tags, request.Prices);
             var productId = await _repository.CreateAsync<Product>(product);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(productId);
@@ -64,7 +61,7 @@ namespace StoreKit.Application.Services.Catalog
                 productImagePath = await _imageService.Save(request.ImageStream, Guid.NewGuid().ToString());
             }
 
-            var updatedProduct = product.Update(request.Name, request.Description, productImagePath, category.Id, request.Tags, request.Price);
+            var updatedProduct = product.Update(request.Name, request.Description, productImagePath, category.Id, request.Tags, request.Prices);
             await _repository.UpdateAsync<Product>(updatedProduct);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(id);

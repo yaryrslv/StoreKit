@@ -12,6 +12,7 @@ namespace StoreKit.Shared.DTOs.Catalog.Product
         public Guid CategoryId { get; set; }
         [Column(TypeName = "jsonb")]
         public List<Tag> Tags { get; set; }
-        public decimal Price { get; set; }
+
+        public List<ProductPrice> Prices { get; set; }
     }
 }

@@ -299,8 +299,8 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
+                    b.Property<List<ProductPrice>>("Prices")
+                        .HasColumnType("jsonb");
 
                     b.Property<List<Tag>>("Tags")
                         .HasColumnType("jsonb");
