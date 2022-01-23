@@ -34,7 +34,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [AllowAnonymous]
         [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
         [SwaggerOperation(Summary = "Search News using available Filters.")]
-        public async Task<IActionResult> GenerateAsync(int generationCount)
+        public async Task<IActionResult> GenerateAsync()
         {
             await _dataProvider.Init();
             return Ok();

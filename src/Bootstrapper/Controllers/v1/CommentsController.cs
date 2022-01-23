@@ -43,7 +43,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [SwaggerOperation(Summary = "Search Comments using available Filters.")]
         public async Task<IActionResult> GenerateAsync(int generationCount)
         {
-            var testCommentsGenerator = new Faker<CreateCommentRequest>()
+            var testCommentsGenerator = new Faker<CreateCommentRequest>("ru_RU")
                 .RuleFor(u => u.CommentatorName, (f, u) => f.Person.UserName)
                 .RuleFor(u => u.Title, (f, u) => f.Lorem.Sentence())
                 .RuleFor(u => u.Description, (f, u) => f.Lorem.Paragraph());

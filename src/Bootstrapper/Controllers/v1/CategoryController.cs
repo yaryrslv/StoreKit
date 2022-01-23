@@ -32,7 +32,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [SwaggerOperation(Summary = "Search News using available Filters.")]
         public async Task<IActionResult> GenerateAsync(int generationCount)
         {
-            var testCategoryGenerator = new Faker<CreateCategoryRequest>()
+            var testCategoryGenerator = new Faker<CreateCategoryRequest>("ru_RU")
                 .RuleFor(u => u.Name, (f, u) => f.Commerce.Product() + Guid.NewGuid());
             var testCategoryList = testCategoryGenerator.Generate(generationCount);
             foreach (var testNewsItem in testCategoryList)
