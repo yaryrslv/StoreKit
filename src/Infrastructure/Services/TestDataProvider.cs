@@ -57,7 +57,7 @@ namespace StoreKit.Infrastructure.Services
             var categories = await _repository.GetSearchResultsAsync<Category, CategoryDetailsDto>(0, 888);
 
             var testProductsGnerator = new Faker<CreateProductRequest>("ru")
-                .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
+                .RuleFor(u => u.Name, (f, u) => $"{f.Commerce.ProductName()} {f.Random.Int(10,99)}")
                 .RuleFor(u => u.Description, (f, u) => f.Commerce.ProductDescription())
                 .RuleFor(u => u.CategoryId, (f, u) => categories.Data[new Random().Next(categories.Data.Count - 1)].Id)
                 .RuleFor(u => u.Prices, (f, u) => new List<ProductPrice> { new ProductPrice { Type = f.Commerce.ProductMaterial(), Price = 10.99M}, new ProductPrice { Type = f.Commerce.ProductMaterial(), Price = 133.15M}});
