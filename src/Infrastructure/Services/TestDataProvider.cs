@@ -30,7 +30,6 @@ namespace StoreKit.Infrastructure.Services
         public TestDataProvider(IServiceScopeFactory serviceFactory)
         {
             _serviceFactory = serviceFactory;
-            Init().Wait();
         }
 
         public async Task Init()
