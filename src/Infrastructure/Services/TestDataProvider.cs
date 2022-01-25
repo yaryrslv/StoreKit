@@ -61,7 +61,7 @@ namespace StoreKit.Infrastructure.Services
                 .RuleFor(u => u.Name, (f, u) => f.Commerce.ProductName())
                 .RuleFor(u => u.Description, (f, u) => f.Commerce.ProductDescription())
                 .RuleFor(u => u.CategoryId, (f, u) => categories.Data[new Random().Next(categories.Data.Count - 1)].Id)
-                .RuleFor(u => u.Prices, (f, u) => new List<ProductPrice>{new ProductPrice{Type = f.Commerce.ProductMaterial(), Price = (decimal)10.99}, new ProductPrice{Type = f.Commerce.ProductMaterial(), Price = (decimal)133.15}});
+                .RuleFor(u => u.Prices, (f, u) => new List<ProductPrice> { new ProductPrice { Type = f.Commerce.ProductMaterial(), Price = 10.99M}, new ProductPrice { Type = f.Commerce.ProductMaterial(), Price = 133.15M}});
             var testProductsList = testProductsGnerator.Generate(count);
             foreach (var testProductItem in testProductsList)
             {

@@ -14,7 +14,7 @@ using StoreKit.Infrastructure.Persistence;
 namespace Migrators.PostgreSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220123122025_InitialCommit")]
+    [Migration("20220125192810_InitialCommit")]
     partial class InitialCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,6 +105,23 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("UserTokens", "Identity");
+                });
+
+            modelBuilder.Entity("StoreKit.Domain.Entities.Catalog.Basket", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<List<Product>>("Products")
+                        .HasColumnType("jsonb");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Baskets");
                 });
 
             modelBuilder.Entity("StoreKit.Domain.Entities.Catalog.Category", b =>

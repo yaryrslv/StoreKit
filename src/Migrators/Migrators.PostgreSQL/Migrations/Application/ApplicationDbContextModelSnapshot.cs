@@ -105,6 +105,23 @@ namespace Migrators.PostgreSQL.Migrations.Application
                     b.ToTable("UserTokens", "Identity");
                 });
 
+            modelBuilder.Entity("StoreKit.Domain.Entities.Catalog.Basket", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<List<Product>>("Products")
+                        .HasColumnType("jsonb");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Baskets");
+                });
+
             modelBuilder.Entity("StoreKit.Domain.Entities.Catalog.Category", b =>
                 {
                     b.Property<Guid>("Id")

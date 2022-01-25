@@ -35,6 +35,7 @@ namespace StoreKit.Application.Services.Catalog
             return categories;
         }
 
+
         public async Task<Result<Guid>> CreateCategoryAsync(CreateCategoryRequest request)
         {
             var categoryExists = await _repository.ExistsAsync<Category>(a => a.Name == request.Name);
