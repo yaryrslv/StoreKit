@@ -16,8 +16,11 @@ namespace StoreKit.Domain.Constants
             PermissionConstants.Comments.View,
             PermissionConstants.Pages.Search,
             PermissionConstants.Pages.View,
-            PermissionConstants.StaticPages.Search,
-            PermissionConstants.StaticPages.View
+            PermissionConstants.Baskets.View,
+            PermissionConstants.Baskets.Search,
+            PermissionConstants.Baskets.Delete,
+            PermissionConstants.Baskets.Edit,
+            PermissionConstants.Baskets.Create,
         };
     }
 }

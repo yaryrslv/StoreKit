@@ -14,7 +14,7 @@ using StoreKit.Infrastructure.Persistence;
 namespace Migrators.PostgreSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220125192810_InitialCommit")]
+    [Migration("20220125194718_InitialCommit")]
     partial class InitialCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StoreKit.Application.Abstractions.Services.Catalog;
+using StoreKit.Application.Abstractions.Services.Identity;
 using StoreKit.Application.Wrapper;
 using StoreKit.Domain.Constants;
 using StoreKit.Infrastructure.Identity.Permissions;
-using StoreKit.Infrastructure.Services;
 using StoreKit.Shared.DTOs.Catalog.Basket;
-using StoreKit.Shared.DTOs.Catalog.News;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace StoreKit.Bootstrapper.Controllers.v1
@@ -19,29 +20,23 @@ namespace StoreKit.Bootstrapper.Controllers.v1
     public class BasketController : ControllerBase
     {
         private readonly IBasketService _service;
-        private readonly TestDataProvider _dataProvider;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUserService _userService;
 
-        public BasketController(IBasketService service, TestDataProvider dataProvider)
+        public BasketController(IBasketService service, IHttpContextAccessor httpContextAccessor, IUserService userService)
         {
             _service = service;
-            _dataProvider = dataProvider;
+            _httpContextAccessor = httpContextAccessor;
+            _userService = userService;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         [MustHavePermission(PermissionConstants.Baskets.View)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PaginatedResult<BasketDto>))]
-        public async Task<IActionResult> GetAsync(Guid id, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
+        public async Task<IActionResult> GetAsync([FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
         {
-            var basket = await _service.GetBasketDetailsAsync(id);
-            return Ok(basket);
-        }
-
-        [HttpGet("byuserid/{userId}")]
-        [MustHavePermission(PermissionConstants.Baskets.View)]
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PaginatedResult<BasketDto>))]
-        public async Task<IActionResult> GetByUserIdAsync(Guid userId, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
-        {
-            var basket = await _service.GetBasketDetailsByUserIdAsync(userId);
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var basket = await _service.GetBasketDetailsByUserIdAsync(new Guid("userId"));
             return Ok(basket);
         }
 

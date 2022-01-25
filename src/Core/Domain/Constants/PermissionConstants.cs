@@ -112,11 +112,11 @@ namespace StoreKit.Domain.Constants
         [Description("Baskets Permissions")]
         public static class Baskets
         {
-            public const string View = "Baskets.StaticPages.View";
-            public const string Create = "Baskets.StaticPages.Create";
-            public const string Edit = "Baskets.StaticPages.Edit";
-            public const string Delete = "Baskets.StaticPages.Delete";
-            public const string Search = "Baskets.StaticPages.Search";
+            public const string View = "Permissions.Baskets.View";
+            public const string Create = "Permissions.Baskets.Create";
+            public const string Edit = "Permissions.Baskets.Edit";
+            public const string Delete = "Permissions.Baskets.Delete";
+            public const string Search = "Permissions.Baskets.Search";
         }
     }
 }
