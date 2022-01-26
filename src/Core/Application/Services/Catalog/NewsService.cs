@@ -51,7 +51,8 @@ namespace StoreKit.Application.Services.Catalog
             var newsCollection = await _repository.GetSearchResultsAsync<News, NewsDto>(filter.PageNumber, filter.PageSize, filter.OrderBy, filter.Keyword);
             var reversedNews = newsCollection.Data;
             reversedNews.Reverse();
-            var newNewsCollection = new PaginatedResult<NewsDto>(reversedNews);
+            var newNewsCollection = new PaginatedResult<NewsDto>(newsCollection.Succeeded, reversedNews,
+                newsCollection.Messages, newsCollection.TotalCount, newsCollection.CurrentPage, newsCollection.PageSize);
             return newNewsCollection;
         }
 

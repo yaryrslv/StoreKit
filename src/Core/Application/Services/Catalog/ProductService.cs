@@ -98,7 +98,7 @@ namespace StoreKit.Application.Services.Catalog
             if (filter.CategoryId != null)
             {
                 var findProducts = products.Data.Where(i => i.CategoryId == filter.CategoryId).ToList();
-                products = new PaginatedResult<ProductDto>(products.Succeeded, findProducts, products.Messages, products.TotalCount, products.CurrentPage, products.PageSize);
+                products = new PaginatedResult<ProductDto>(products.Succeeded, findProducts, products.Messages, products.Data.Count, products.CurrentPage, products.PageSize);
             }
             if (filter.Tags != null && filter.Tags.Count() > 0)
             {
@@ -135,7 +135,7 @@ namespace StoreKit.Application.Services.Catalog
                 }
             }
 
-            return new PaginatedResult<ProductDto>(products.Succeeded, products.Data, products.Messages, products.TotalCount, products.CurrentPage, products.PageSize);
+            return new PaginatedResult<ProductDto>(products.Succeeded, products.Data, products.Messages, products.Data.Count, products.CurrentPage, products.PageSize);
         }
     }
 }
