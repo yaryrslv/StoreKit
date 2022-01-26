@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Localization;
@@ -50,29 +51,54 @@ namespace StoreKit.Application.Services.Catalog
             };
         }
 
-        public async Task<Result<Guid>> CreateBasketAsync(CreateBasketRequest request)
+        public async Task<Result<Guid>> CreateBasketAsync(CreateBasketRequest request, Guid userId)
         {
-            var user = await _userService.GetAsync(request.UserId.ToString());
+            var user = await _userService.GetAsync(userId.ToString());
             if (user == null)
             {
-                throw new EntityNotFoundException(string.Format(_localizer["user.notfound"], request.UserId));
+                throw new EntityNotFoundException(string.Format(_localizer["user.notfound"], userId));
             }
-            bool basketExists = await _repository.ExistsAsync<Basket>(a => a.UserId == request.UserId);
-            if (basketExists) throw new EntityAlreadyExistsException(string.Format(_localizer["basketwiththisuser.alreadyexists"], request.UserId));
-            var basket = new Basket(request.UserId, request.Products);
+            bool basketExists = await _repository.ExistsAsync<Basket>(a => a.UserId == userId);
+            if (basketExists) throw new EntityAlreadyExistsException(string.Format(_localizer["basketwiththisuser.alreadyexists"], userId));
+            var products = new List<Product>();
+            foreach (var requestedProduct in request.Products)
+            {
+                var product = await _repository.GetByIdAsync<Product>(requestedProduct.Id);
+                if (product != null && product.Prices.Select(i => i.Type).Contains(requestedProduct.PriceType))
+                {
+                    products.Add(product);
+                }
+            }
+            var basket = new Basket(userId, products);
             var basketId = await _repository.CreateAsync<Basket>(basket);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(basketId);
         }
 
-        public async Task<Result<Guid>> UpdateBasketAsync(UpdateBasketRequest request, Guid id)
+        public async Task<Result<Guid>> UpdateBasketAsync(UpdateBasketRequest request, Guid userId)
         {
-            var basket = await _repository.GetByIdAsync<Basket>(id);
-            if (basket == null) throw new EntityNotFoundException(string.Format(_localizer["basket.notfound"], id));
-            var updatedBasket = basket.Update(request.UserId, request.Products);
+            var user = await _userService.GetAsync(userId.ToString());
+            if (user == null)
+            {
+                throw new EntityNotFoundException(string.Format(_localizer["user.notfound"], userId));
+            }
+
+            var basketList = await _repository.GetListAsync<Basket>(a => a.UserId == userId);
+            var basket = basketList.FirstOrDefault();
+            if (basket == null) throw new EntityNotFoundException(string.Format(_localizer["basketbyuser.notfound"], userId));
+            var products = new List<Product>();
+            foreach (var requestedProduct in request.Products)
+            {
+                var product = await _repository.GetByIdAsync<Product>(requestedProduct.Id);
+                if (product != null && product.Prices.Select(i => i.Type).Contains(requestedProduct.PriceType))
+                {
+                    products.Add(product);
+                }
+            }
+            var updatedBasket = basket.Update(userId, products);
             await _repository.UpdateAsync<Basket>(updatedBasket);
             await _repository.SaveChangesAsync();
-            return await Result<Guid>.SuccessAsync(id);
+            return await Result<Guid>.SuccessAsync(basket.Id);
         }
 
         public async Task<Result<Guid>> DeleteBasketAsync(Guid id)

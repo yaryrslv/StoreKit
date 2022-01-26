@@ -9,8 +9,8 @@ namespace StoreKit.Application.Abstractions.Services.Catalog
     {
         Task<Result<BasketDetailsDto>> GetBasketDetailsAsync(Guid id);
         Task<BasketDetailsDto> GetBasketDetailsByUserIdAsync(Guid id);
-        Task<Result<Guid>> CreateBasketAsync(CreateBasketRequest request);
-        Task<Result<Guid>> UpdateBasketAsync(UpdateBasketRequest request, Guid id);
+        Task<Result<Guid>> CreateBasketAsync(CreateBasketRequest request, Guid userId);
+        Task<Result<Guid>> UpdateBasketAsync(UpdateBasketRequest request, Guid userId);
         Task<Result<Guid>> DeleteBasketAsync(Guid id);
     }
 }

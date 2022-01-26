@@ -36,16 +36,17 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         public async Task<IActionResult> GetAsync([FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var basket = await _service.GetBasketDetailsByUserIdAsync(new Guid("userId"));
+            var basket = await _service.GetBasketDetailsByUserIdAsync(new Guid(userId));
             return Ok(basket);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         [MustHavePermission(PermissionConstants.Baskets.Edit)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Result<Guid>))]
-        public async Task<IActionResult> UpdateAsync(UpdateBasketRequest request, Guid id)
+        public async Task<IActionResult> UpdateAsync(UpdateBasketRequest request)
         {
-            return Ok(await _service.UpdateBasketAsync(request, id));
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return Ok(await _service.UpdateBasketAsync(request, new Guid(userId)));
         }
 
         [HttpPost]
@@ -53,7 +54,8 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Result<Guid>))]
         public async Task<IActionResult> CreateAsync(CreateBasketRequest request)
         {
-            return Ok(await _service.CreateBasketAsync(request));
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return Ok(await _service.CreateBasketAsync(request, new Guid(userId)));
         }
 
         [HttpDelete("{id}")]

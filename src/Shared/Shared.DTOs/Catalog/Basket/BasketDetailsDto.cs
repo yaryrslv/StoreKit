@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace StoreKit.Shared.DTOs.Catalog.Basket
