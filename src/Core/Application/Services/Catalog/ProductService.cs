@@ -7,7 +7,6 @@ using StoreKit.Domain.Entities.Catalog;
 using Mapster;
 using Microsoft.Extensions.Localization;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -34,25 +33,25 @@ namespace StoreKit.Application.Services.Catalog
 
         public async Task<Result<Guid>> CreateProductAsync(CreateProductRequest request)
         {
-            var productExists = await _repository.ExistsAsync<Product>(a => a.Name == request.Name);
+            bool productExists = await _repository.ExistsAsync<Product>(a => a.Name == request.Name);
             if (productExists) throw new EntityAlreadyExistsException(string.Format(_localizer["product.alreadyexists"], request.Name));
 
-            var category = await _repository.GetByIdAsync<Category>(request.CategoryId, null);
+            var category = await _repository.GetByIdAsync<Category>(request.CategoryId);
             if (category == null) throw new EntityNotFoundException(string.Format(_localizer["category.notfound"], request.CategoryId));
 
             //string productImagePath = await _imageService.Save(imageStream, Guid.NewGuid().ToString());
             var product = new Product(request.Name, request.Description, null, category.Id, request.Tags, request.Prices);
-            var productId = await _repository.CreateAsync<Product>(product);
+            var productId = await _repository.CreateAsync(product);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(productId);
         }
 
         public async Task<Result<Guid>> UpdateProductAsync(UpdateProductRequest request, Guid id)
         {
-            var product = await _repository.GetByIdAsync<Product>(id, null);
+            var product = await _repository.GetByIdAsync<Product>(id);
             if (product == null) throw new EntityNotFoundException(string.Format(_localizer["product.notfound"], id));
 
-            var category = await _repository.GetByIdAsync<Product>(request.CategoryId, null);
+            var category = await _repository.GetByIdAsync<Product>(request.CategoryId);
             if (category == null) throw new EntityNotFoundException(string.Format(_localizer["category.notfound"], request.CategoryId));
 
             string productImagePath = string.Empty;
@@ -62,7 +61,7 @@ namespace StoreKit.Application.Services.Catalog
             }
 
             var updatedProduct = product.Update(request.Name, request.Description, productImagePath, category.Id, request.Tags, request.Prices);
-            await _repository.UpdateAsync<Product>(updatedProduct);
+            await _repository.UpdateAsync(updatedProduct);
             await _repository.SaveChangesAsync();
             return await Result<Guid>.SuccessAsync(id);
         }
@@ -79,7 +78,7 @@ namespace StoreKit.Application.Services.Catalog
         public async Task<Result<ProductDetailsDto>> GetProductDetailsAsync(Guid id)
         {
             var spec = new BaseSpecification<Product>();
-            spec.Includes.Add(a => a.Tags as List<Tag>);
+            spec.Includes.Add(a => a.Tags);
             spec.Includes.Add(a => a.Prices);
             var product = await _repository.GetByIdAsync<Product, ProductDetailsDto>(id, spec);
             return await Result<ProductDetailsDto>.SuccessAsync(product);
@@ -95,12 +94,12 @@ namespace StoreKit.Application.Services.Catalog
         public async Task<PaginatedResult<ProductDto>> SearchAsync(ProductListFilter filter)
         {
             var products = await _repository.GetSearchResultsAsync<Product, ProductDto>(filter.PageNumber, filter.PageSize, filter.OrderBy, filter.Keyword);
-            if (filter.CategoryId != null)
+            if (filter.CategoryId != null && filter.CategoryId != Guid.Empty)
             {
                 var findProducts = products.Data.Where(i => i.CategoryId == filter.CategoryId).ToList();
                 products = new PaginatedResult<ProductDto>(products.Succeeded, findProducts, products.Messages, products.Data.Count, products.CurrentPage, products.PageSize);
             }
-            if (filter.Tags != null && filter.Tags.Count() > 0)
+            if (filter.Tags?.Any() == true)
             {
                 var findProducts = products.Data.Where(i =>
                 {
@@ -114,10 +113,10 @@ namespace StoreKit.Application.Services.Catalog
                 }).ToList();
                 if (findProducts.Count > 0)
                 {
-                    products.Data = findProducts;
+                    products = new PaginatedResult<ProductDto>(products.Succeeded, findProducts, products.Messages, products.Data.Count, products.CurrentPage, products.PageSize);
                 }
             }
-            if (filter.Prices != null && filter.Prices.Count() > 0)
+            if (filter.Prices is {Count: > 0})
             {
                 var findProducts = products.Data.Where(i =>
                 {
@@ -131,7 +130,7 @@ namespace StoreKit.Application.Services.Catalog
                 }).ToList();
                 if (findProducts.Count > 0)
                 {
-                    products.Data = findProducts;
+                    products = new PaginatedResult<ProductDto>(products.Succeeded, findProducts, products.Messages, products.Data.Count, products.CurrentPage, products.PageSize);
                 }
             }
 
