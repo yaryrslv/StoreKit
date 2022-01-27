@@ -36,7 +36,6 @@ namespace StoreKit.Application.Services.LocalStorage
         public async Task Invoke(
             HttpContext context,
             IImageService imageService,
-            ILogger logger,
             IOptions<StaticFileSettings> staticFileSettings)
         {
             var requestPath = context.Request.Path;
@@ -44,30 +43,25 @@ namespace StoreKit.Application.Services.LocalStorage
 
             if (!TryMatchPath(requestPath, out var path, staticFileSettings.Value))
             {
-                logger.LogError($"The request path {path} does not match the path filter");
+
             }
             else if (!_contentTypeProvider.TryGetContentType(path, out _))
             {
-                logger.LogError($"The request path {path} does not match a supported file type");
             }
             else if (!File.Exists(PathToFullImage()))
             {
-                logger.LogError($"The request path {filePath} does not match an existing file");
             }
             else if (!context.Request.Query.TryGetValue(WidthQueryParameter, out var stringWidth))
             {
-                logger.LogError($"The request path {filePath} does not contains width parameter");
             }
             else if (!double.TryParse(stringWidth.ToString().Replace(",", "."), NumberStyles.Number,
 #pragma warning disable SA1117
                 CultureInfo.InvariantCulture, out var width))
 #pragma warning restore SA1117
             {
-                logger.LogError($"The request path {filePath} has invalid width parameter");
             }
             else if (File.Exists(PhysicallPathToResizedImage((int)width)) && !IsOpen(PhysicallPathToResizedImage((int)width)))
             {
-                logger.LogError("File has already compressed");
                 context.Request.Path = VirtualPathToResizedImage((int)width);
             }
             else

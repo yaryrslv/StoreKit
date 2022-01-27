@@ -60,13 +60,14 @@ namespace StoreKit.Application.Services.Catalog
             }
             bool basketExists = await _repository.ExistsAsync<Basket>(a => a.UserId == userId);
             if (basketExists) throw new EntityAlreadyExistsException(string.Format(_localizer["basketwiththisuser.alreadyexists"], userId));
-            var products = new List<Product>();
+            var products = new List<ProductInBasket>();
             foreach (var requestedProduct in request.Products)
             {
                 var product = await _repository.GetByIdAsync<Product>(requestedProduct.Id);
                 if (product != null && product.Prices.Select(i => i.Type).Contains(requestedProduct.PriceType))
                 {
-                    products.Add(product);
+                    var price = product.Prices.First(i => i.Type == requestedProduct.PriceType);
+                    products.Add(new ProductInBasket(product.Name, product.Description, product.ImagePath, price.Type, price.Price));
                 }
             }
             var basket = new Basket(userId, products);
@@ -86,13 +87,14 @@ namespace StoreKit.Application.Services.Catalog
             var basketList = await _repository.GetListAsync<Basket>(a => a.UserId == userId);
             var basket = basketList.FirstOrDefault();
             if (basket == null) throw new EntityNotFoundException(string.Format(_localizer["basketbyuser.notfound"], userId));
-            var products = new List<Product>();
+            var products = new List<ProductInBasket>();
             foreach (var requestedProduct in request.Products)
             {
                 var product = await _repository.GetByIdAsync<Product>(requestedProduct.Id);
                 if (product != null && product.Prices.Select(i => i.Type).Contains(requestedProduct.PriceType))
                 {
-                    products.Add(product);
+                    var price = product.Prices.First(i => i.Type == requestedProduct.PriceType);
+                    products.Add(new ProductInBasket(product.Name, product.Description, product.ImagePath, price.Type, price.Price));
                 }
             }
             var updatedBasket = basket.Update(userId, products);

@@ -111,7 +111,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<List<Product>>("Products")
+                    b.Property<List<ProductInBasket>>("Products")
                         .HasColumnType("jsonb");
 
                     b.Property<Guid>("UserId")

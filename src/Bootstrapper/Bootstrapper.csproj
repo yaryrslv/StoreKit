@@ -66,4 +66,9 @@
   <ItemGroup>
     <Folder Include="wwwroot" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="OPSPay.Client, Version=1.0.0.1, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\OPSWebApplication\OPSPay.Client.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

@@ -4,5 +4,11 @@
         <name>StoreKit.Bootstrapper</name>
     </assembly>
     <members>
+        <member name="M:StoreKit.Bootstrapper.Controllers.v1.PaymentController.PayAsync(System.String)">
+            <summary>
+            Создать платеж.
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OPSPay.Client.Infrastucture;
 using StoreKit.Application.Services.LocalStorage;
 using StoreKit.Infrastructure.Services.LocalStorage;
 
@@ -30,6 +31,8 @@ namespace StoreKit.Bootstrapper
             services
                 .AddApplication()
                 .AddInfrastructure(_config);
+            services.AddOpsCryptoSimple();
+            services.AddOpsPay();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

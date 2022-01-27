@@ -40,7 +40,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Products = table.Column<List<Product>>(type: "jsonb", nullable: true)
+                    Products = table.Column<List<ProductInBasket>>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {

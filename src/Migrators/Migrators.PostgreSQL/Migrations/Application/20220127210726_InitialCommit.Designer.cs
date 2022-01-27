@@ -14,7 +14,7 @@ using StoreKit.Infrastructure.Persistence;
 namespace Migrators.PostgreSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220125194718_InitialCommit")]
+    [Migration("20220127210726_InitialCommit")]
     partial class InitialCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,7 +113,7 @@ namespace Migrators.PostgreSQL.Migrations.Application
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<List<Product>>("Products")
+                    b.Property<List<ProductInBasket>>("Products")
                         .HasColumnType("jsonb");
 
                     b.Property<Guid>("UserId")
