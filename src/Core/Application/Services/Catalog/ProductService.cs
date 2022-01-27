@@ -78,8 +78,6 @@ namespace StoreKit.Application.Services.Catalog
         public async Task<Result<ProductDetailsDto>> GetProductDetailsAsync(Guid id)
         {
             var spec = new BaseSpecification<Product>();
-            spec.Includes.Add(a => a.Tags);
-            spec.Includes.Add(a => a.Prices);
             var product = await _repository.GetByIdAsync<Product, ProductDetailsDto>(id, spec);
             return await Result<ProductDetailsDto>.SuccessAsync(product);
         }
