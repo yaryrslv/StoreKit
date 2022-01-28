@@ -64,9 +64,9 @@ namespace StoreKit.Bootstrapper.Controllers.v1
                         {
                             new OrderItem
                             {
-                                ProductId = totalCount == 0 ? Guid.NewGuid().ToString() : basket.Products[0].Id.ToString(),
+                                ProductId = totalCount != 0 ? Guid.NewGuid().ToString() : basket.Products[0].Id.ToString(),
                                 Description = "Покупатель: " + userId,
-                                Price = totalCount == 0 ? totalCount : (int)(basket.Products.Sum(i => i.Price) * 100)
+                                Price = totalCount != 0 ? totalCount : (int)(basket.Products.Sum(i => i.Price) * 100)
 
                                 // Quantity = 1,
                                 // Unit = "шт."
