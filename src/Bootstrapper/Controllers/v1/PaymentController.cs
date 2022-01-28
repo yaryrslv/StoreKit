@@ -97,6 +97,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
                 return new ObjectResult(mess);
             }
 
+            await _service.DeleteBasketAsync(basket.Id);
             return new ObjectResult(mess);
         }
     }

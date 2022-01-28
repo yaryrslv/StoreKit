@@ -83,7 +83,12 @@ namespace StoreKit.Application.Services.Catalog
             {
                 throw new EntityNotFoundException(string.Format(_localizer["user.notfound"], userId));
             }
-
+            bool basketExists = await _repository.ExistsAsync<Basket>(a => a.UserId == userId);
+            if (!basketExists)
+            {
+                var newBasket = new Basket(userId, new List<ProductInBasket>());
+                await _repository.CreateAsync<Basket>(newBasket);
+            }
             var basketList = await _repository.GetListAsync<Basket>(a => a.UserId == userId);
             var basket = basketList.FirstOrDefault();
             if (basket == null) throw new EntityNotFoundException(string.Format(_localizer["basketbyuser.notfound"], userId));
