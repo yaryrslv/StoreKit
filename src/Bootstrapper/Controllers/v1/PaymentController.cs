@@ -49,7 +49,29 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         public async Task<IActionResult> PayAsync(int totalCount = 0, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
         {
             string userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var basket = await _service.GetBasketDetailsByUserIdAsync(new Guid(userId));
+            OrderItem orderItem;
+            if (totalCount == 0)
+            {
+                var basket = await _service.GetBasketDetailsByUserIdAsync(new Guid(userId));
+                orderItem = new OrderItem
+                {
+                    ProductId =  basket.Products[0].Id.ToString(),
+                    Description = "Покупатель: " + userId,
+                    Price = (int)(basket.Products.Sum(i => i.Price) * 100)
+
+                    // Quantity = 1,
+                    // Unit = "шт."
+                };
+            }
+            else
+            {
+                orderItem = new OrderItem
+                {
+                    ProductId = Guid.NewGuid().ToString(),
+                    Description = "Покупатель: " + userId,
+                    Price =totalCount
+                };
+            }
 
             int orderId = new Random().Next(1000, 10000);
 
@@ -62,15 +84,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
                 OrderDate = DateTime.Now,
                 Items = new List<OrderItem>
                         {
-                            new OrderItem
-                            {
-                                ProductId = totalCount == 0 ? Guid.NewGuid().ToString() : basket.Products[0].Id.ToString(),
-                                Description = "Покупатель: " + userId,
-                                Price = totalCount == 0 ? totalCount : (int)(basket.Products.Sum(i => i.Price) * 100)
-
-                                // Quantity = 1,
-                                // Unit = "шт."
-                            }
+                            orderItem
                         },
             };
 
@@ -97,7 +111,6 @@ namespace StoreKit.Bootstrapper.Controllers.v1
                 return new ObjectResult(mess);
             }
 
-            await _service.DeleteBasketAsync(basket.Id);
             return new ObjectResult(mess);
         }
     }
