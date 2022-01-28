@@ -53,7 +53,11 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         {
             string userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var user = await _userService.GetAsync(userId);
-            var basket = await _service.GetBasketDetailsByUserIdAsync(new Guid(userId));
+            var basket = new BasketDetailsDto();
+            if (totalCount == 0)
+            {
+                basket = await _service.GetBasketDetailsByUserIdAsync(new Guid(userId));
+            }
 
             int orderId = new Random().Next(1000, 10000);
 
@@ -101,7 +105,11 @@ namespace StoreKit.Bootstrapper.Controllers.v1
                 return new ObjectResult(mess);
             }
 
-            await _service.DeleteBasketAsync(basket.Id);
+            if (totalCount == 0)
+            {
+                await _service.DeleteBasketAsync(basket.Id);
+            }
+
             return new ObjectResult(mess);
         }
     }
