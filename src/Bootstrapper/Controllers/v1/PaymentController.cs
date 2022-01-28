@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using StoreKit.Application.Abstractions.Services.Catalog;
+using StoreKit.Application.Abstractions.Services.Identity;
 using StoreKit.Application.Wrapper;
 using StoreKit.Domain.Constants;
 using StoreKit.Infrastructure.Identity.Permissions;
@@ -30,13 +31,15 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         private readonly IOpspay _opspay;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IBasketService _service;
+        private readonly IUserService _userService;
 
-        public PaymentController(ILogger<PaymentController> logger, IOpspay opspay, IHttpContextAccessor httpContextAccessor, IBasketService service)
+        public PaymentController(ILogger<PaymentController> logger, IOpspay opspay, IHttpContextAccessor httpContextAccessor, IBasketService service, IUserService userService)
         {
             _logger = logger;
             _opspay = opspay;
             _httpContextAccessor = httpContextAccessor;
             _service = service;
+            _userService = userService;
         }
 
         /// <summary>
@@ -49,6 +52,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         public async Task<IActionResult> PayAsync(int totalCount = 0, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
         {
             string userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = await _userService.GetAsync(userId);
             var basket = await _service.GetBasketDetailsByUserIdAsync(new Guid(userId));
 
             int orderId = new Random().Next(1000, 10000);
@@ -65,7 +69,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
                             new OrderItem
                             {
                                 ProductId = totalCount != 0 ? Guid.NewGuid().ToString() : basket.Products[0].Id.ToString(),
-                                Description = "Покупатель: " + userId,
+                                Description = "Покупатель: " + user.Data.Email,
                                 Price = totalCount != 0 ? totalCount : (int)(basket.Products.Sum(i => i.Price) * 100)
 
                                 // Quantity = 1,
