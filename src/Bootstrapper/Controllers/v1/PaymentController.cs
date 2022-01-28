@@ -46,7 +46,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
         [HttpPost]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(string))]
         [SwaggerHeader("tenantKey", "Input your tenant Id to access this API", "", true)]
-        public async Task<IActionResult> PayAsync([FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
+        public async Task<IActionResult> PayAsync(int totalCount = 0, [FromHeader(Name = "tenantKey")][Required] string tenantKey = null)
         {
             string userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var basket = await _service.GetBasketDetailsByUserIdAsync(new Guid(userId));
@@ -66,7 +66,7 @@ namespace StoreKit.Bootstrapper.Controllers.v1
                             {
                                 ProductId = basket.Products[0].Id.ToString(),
                                 Description = "Покупатель: " + userId,
-                                Price = (int)(basket.Products.Sum(i => i.Price) * 100)
+                                Price = totalCount == 0 ? totalCount : (int)(basket.Products.Sum(i => i.Price) * 100)
 
                                 // Quantity = 1,
                                 // Unit = "шт."
