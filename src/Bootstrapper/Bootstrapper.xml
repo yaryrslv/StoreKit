@@ -4,7 +4,7 @@
         <name>StoreKit.Bootstrapper</name>
     </assembly>
     <members>
-        <member name="M:StoreKit.Bootstrapper.Controllers.v1.PaymentController.PayAsync(System.String)">
+        <member name="M:StoreKit.Bootstrapper.Controllers.v1.PaymentController.PayAsync(System.Int32,System.String)">
             <summary>
             Создать платеж.
             </summary>
